@@ -20,3 +20,12 @@
 
 ## 大模型训练师
    LLM trainer 
+
+## 25年AI的发展
+- openai 发布了Sora2 冲击 tiktok
+- 豆包植入了一键购买 AI电商
+- openai发布了 Atlas AI浏览器，冲击Google 
+- to B 企业端 AI Agents 正在提高效率
+
+使用大模型来搜索、解决问题 LLM 有比百度/taobao更好的**用户体验**，
+很多用户用，流量有了，钱就来了。
