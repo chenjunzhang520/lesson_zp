@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>box-sizing</title>
+    <style>
+        .box {
+            width: 200px;
+            height: 100px;
+            padding: 20px;
+            border: 5px solid black;
+            margin: 20px;
+        }
+        .border-box {
+            /* border padding 先分配，剩余的是内容大小 
+               多列式布局的时候有优势
+            */
+            background-color: #b3c0d1;
+            box-sizing: border-box;
+        }
+        .content-box {
+            background-color: lightblue;
+            box-sizing: content-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="box border-box">Border with border-box</div>
+    <div class="box content-box">Box with content-box</div>
+</body>
+</html>
