@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伪元素</title>
+    <style>
+        .container {
+            max-width: 600px;  /* 适配 移动端用自己的宽度 PC 端 max-width*/
+            margin: 0 auto;  /* 左右水平居中 */
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .more {
+            /* 格式化上下文 定义元素的布局规则 */
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .more::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: yellow;
+            transform: scaleX(0);
+            transform-origin: bottom left;
+            transition: transform 0.3s ease;
+        }
+        .more:hover::before {
+            transform:scaleX(1);
+        }
+        .more::after {
+            display: inline-block;
+            content: "\2192";
+            position: absolute;
+            transition: transform 0.3s ease;
+        }
+        .more:hover::after {
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>示例标题</h1>
+        <p>这是一个段落</p>
+        <a href="" class="more">查看更多</a>
+    </div>
+</body>
+</html>

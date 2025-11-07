@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- 外联样式 -->
+  <link rel="stylesheet" href="theme.css">
+  <!-- 内嵌样式 -->
+  <style>
+  .text p {
+    color: red;
+  }
+  div p {
+    color: blue;
+  }
+  #main p {
+    color: green;
+  }
+  .container #main p {
+    color: orange;
+  }
+  .btn {
+    background: black;
+  }
+  </style>
+</head>
+<body>
+  <div class="text">
+    <p>Hello</p>
+  </div>
+  
+  <div class="container">
+    <div id="main">
+      <p>Hello</p>
+    </div>
+  </div>
+  <!-- 行内样式, 少用 -->
+  <button class="btn" style="background: pink;">Click</button>
+</body>
+</html>
