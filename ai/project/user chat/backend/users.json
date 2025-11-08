@@ -1,0 +1,24 @@
+{
+    "users": [
+        {
+            "id": 1 ,
+            "username": "陈",
+            "hometown": "九江"
+        },
+        {
+            "id": 2,
+            "username": "李",
+            "hometown": "南昌"
+        },
+        {
+            "id": 3,
+            "username": "王",
+            "hometown": "上海"
+        },
+        {
+            "id": 4,
+            "username": "赵",
+            "hometown": "深圳"
+        }
+    ]
+}
