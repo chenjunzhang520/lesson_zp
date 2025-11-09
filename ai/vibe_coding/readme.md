@@ -17,3 +17,7 @@ AI 会理解你的模糊意图，并将其转化为具体的代码实现。
   - .trae
     - rules
       project_rules.md
+
+# Vibe Coding  氛围编程
+- 提出需求，AI 直接开干。
+- 直接帮你生成一段完整的代码，提出需求即可，debug也可以交给AI
