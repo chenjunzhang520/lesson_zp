@@ -20,7 +20,7 @@
         console.log(xhr.readyState,'------');
         
         // 打开一个请求
-        xhr.open('GET', 'https://api.github.com/orgs/lemoncode/members',false);
+        xhr.open('GET', 'https://api.github.com/orgs/lemoncode/members',true);
         // 真正发送出去
         console.log(xhr.readyState,'|------');
         xhr.send();
