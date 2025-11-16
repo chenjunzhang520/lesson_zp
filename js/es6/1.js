@@ -15,8 +15,8 @@ const arr = [1,2,3,4,5];
 // arr[0] a
 // 余下的 数组，b
 // reset 运算符
-const [a, ...b] = arr
-console.log(a,b);
+// const [a, ...b] = arr
+// console.log(a,b);
 
 const users = ['Darvin Ham','James','Luka','Davis','Ayton','chen'];
 // 左右一致
@@ -40,6 +40,14 @@ const obj = {
 // 嵌套
 let {name,age,like:{n}} = obj;
 console.log(name,age,n);
+const [a,b,...c] = 'hello';
+console.log(a,b,c);
+// const str = 'hello';
+// console.log(str.length);
+// length
+// 包装类
+const {length} = 'hello'; // 长度
+console.log(length);
 
 
 
