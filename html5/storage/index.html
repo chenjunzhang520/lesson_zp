@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalStorage Todos</title>
+    <link rel="stylesheet" href="./common.css">
+</head>
+<body>
+    <div class="wrapper">
+        <h2>LOCAL TAPAS</h2>
+        <p></p>
+        <ul class="plates">
+            <li>Loading Tapas...</li>
+        </ul>
+        <form class="add-items">
+            <input 
+            type="text"  
+            placeholder="Item Name" 
+            required
+            name="item"
+            >
+            <input type="submit" value="+ Add Item">
+        </form>
+    </div>
+    <script>
+        const addItems = document.querySelector('.add-items');
+        const itemsList = document.querySelector('.plates');
+        const items = JSON.parse(localStorage.getItem('todos')) || [];
+        // 函数式封装， 拒绝流程式代码
+        // 封装实现细节，比较难，封装的人和调用的人式两拨人
+        // 复用
+        // 函数默认值是es6
+        // 流程式代码超过10行，一定要封装函数 
+        function populateList(plates=[], plateList) {
+            plateList.innerHTML = plates.map((plate,i) => {
+                return `
+                    <li>
+                        <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''}>
+                        <label for="item${i}">${plate.text}</label>
+                    </li>
+                `
+            }).join('');
+        }
+
+        function addItem(event) {
+            event.preventDefault(); // 阻止默认行为
+            // 函数执行时会有this 事件处理函数的时候，指向form表单
+            console.log(this,'////');
+            const text = (this.querySelector('[name=item]')).value.trim();
+            const item = {
+                text,
+                done: false
+            }
+            items.push(item);
+            // 持久化存储 key => value   字符串  localStorage只能存储字符串
+            localStorage.setItem('todos',JSON.stringify(items));
+            populateList(items, itemsList);
+            this.reset();
+        }
+
+        function toggleDone(event) {
+            const el = event.target;
+            console.log(el.tagName,'?/?/');
+            if(el.tagName === 'INPUT'){
+                // console.log('//////');
+                const index = el.dataset.index;
+                items[index].done = !items[index].done;
+                localStorage.setItem('todos',JSON.stringify(items));
+                populateList(items, itemsList);
+            }
+        }
+        addItems.addEventListener('submit',addItem);
+        itemsList.addEventListener('click',toggleDone);
+        populateList(items, itemsList);
+    </script>
+</body>
+</html>
