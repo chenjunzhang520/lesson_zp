@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // class Person {
+        //     constructor(name, age) {
+        //         this.name = name;
+        //         this.age = age;
+        //     }
+        //     sayHi() {
+        //         console.log(`你好，我是${this.name}`);
+        //     }
+        // }
+        // es5 没有class 抽象一个类的模板(属性 方法)
+        // 属性 构造函数
+        function Person(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+        Person.prototype = {
+            speci: '人类',
+            sayHello: function() {
+                console.log(`你好，我是${this.name}`);
+            }
+        }
+        const ch = new Person('陈', 18); // 实例
+        console.log(ch.__proto__ == Person.prototype);
+        console.log(Person.prototype.constructor == Person);
+        // 对象的原型对象是？
+        console.log(Object.getPrototypeOf(ch) == Person.prototype);
+
+    </script>
+</body>
+</html>

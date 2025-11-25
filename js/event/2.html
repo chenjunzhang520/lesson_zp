@@ -13,7 +13,7 @@
     </ul>
     <script>
         const lis = document.querySelectorAll('#list li');
-        console.log(lis);
+        // console.log(lis);
         // lis.addEventListener('click', function(event) {
         //     console.log(event.target.innerHTML);
         // })
@@ -25,11 +25,13 @@
         
         document.getElementById('list').addEventListener('click', function(event) {
             // li 任何一个都会触发 n 个li 事件节省为一个
-            console.log('------');
-            console.log(event.target, event.target.innerHTML);
+            // console.log('------');
+            // console.log(event.target, event.target.innerHTML);
             
             if (event.target.tagName === 'LI') {
                 console.log(event.target.innerHTML);
+                console.log(event.target.textContent);
+                console.log(event.target.tagName);
             }
         })
     </script>

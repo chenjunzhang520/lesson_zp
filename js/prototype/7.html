@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var obj = new Object(); // {}
+        obj.species = '动物';
+        function Animal() {
+        }
+        Animal.prototype = obj;
+        function Person() {
+        }
+        Person.prototype = new Animal();
+
+        var ch = new Person();
+        console.log(ch.species, ch.__proto__, ch.toString());
+        
+        
+    </script>
+</body>
+</html>
