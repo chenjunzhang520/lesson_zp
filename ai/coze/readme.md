@@ -22,11 +22,11 @@
 - 创建了一个人工客服知识库
 - 创建一个课程知识库
 
-
+https://www.coze.cn/space/7502653574216679435/bot/7577742484743667722
 botId: 
+7577742484743667722
 
-
-
+cztei_qJ4mIzqYpKrqT7LxJLFFptVO3Fj0h0HuYhzY2mx8MBzd3sA77Wk6O61ZmUfcKhlRq
 
 ## Coze API 调用
 - 很多网站都有智能客服

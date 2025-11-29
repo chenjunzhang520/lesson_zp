@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心灵治愈空间</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .main-slogan {
+            font-size: 3rem;
+            color: #e74c3c;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 2s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .healing-button {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border: none;
+            border-radius: 30px;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            color: #666;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .healing-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #fed6e3 0%, #a8edea 100%);
+        }
+        
+        .healing-button:active {
+            transform: translateY(1px);
+        }
+        
+        .message-bubble {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+            padding: 5px 15px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transform: translate(-50%, 0);
+        }
+        
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, 0) rotate(0deg);
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -100px) rotate(10deg);
+            }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-slogan {
+                font-size: 2.2rem;
+            }
+            
+            .healing-button {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-slogan {
+                font-size: 1.8rem;
+            }
+            
+            .healing-button {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .buttons-container {
+                gap: 10px;
+            }
+            
+            .message-bubble {
+                font-size: 12px !important; /* !important 确保覆盖JavaScript设置的样式 */
+                padding: 3px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-slogan">祝你天天开心！</h1>
+        <div class="buttons-container">
+            <button class="healing-button">抱抱你</button>
+            <button class="healing-button">一切都会好起来的</button>
+            <button class="healing-button">你已经很棒了</button>
+            <button class="healing-button">今天也很爱你</button>
+            <button class="healing-button">慢慢来，没关系</button>
+        </div>
+    </div>
+    
+    <script>
+        // 治愈性文字气泡内容数组
+        const healingMessages = [
+            "世界因你而美好",
+            "慢慢来，没关系",
+            "今天也很爱你",
+            "你是最棒的",
+            "一切都会好起来的",
+            "给自己一个拥抱吧",
+            "你值得被温柔对待",
+            "每一天都是新的开始",
+            "你很重要",
+            "我爱你本来的样子",
+            "困难只是暂时的",
+            "你已经做得很好了",
+            "相信自己",
+            "你的笑容很温暖",
+            "勇敢的你最美丽",
+            "感恩有你",
+            "生活因你而精彩",
+            "坚持就是胜利",
+            "你值得所有美好",
+            "继续前进，未来可期"
+        ];
+        
+        // 颜色数组，用于随机文字颜色
+        const colors = [
+            '#e74c3c', '#3498db', '#2ecc71', '#f1c40f', 
+            '#9b59b6', '#1abc9c', '#e67e22', '#34495e'
+        ];
+        
+        // 获取所有按钮元素
+        const buttons = document.querySelectorAll('.healing-button');
+        
+        // 为每个按钮添加点击事件
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                // 每次点击生成5-10个文字气泡
+                const bubbleCount = Math.floor(Math.random() * 6) + 5;
+                for (let i = 0; i < bubbleCount; i++) {
+                    createBubble();
+                }
+            });
+        });
+        
+        // 创建文字气泡函数
+        function createBubble() {
+            // 创建气泡元素
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble';
+            
+            // 随机选择一条治愈性文字
+            const randomMessage = healingMessages[Math.floor(Math.random() * healingMessages.length)];
+            bubble.textContent = randomMessage;
+            
+            // 随机位置
+            const randomX = Math.random() * 100;
+            const randomY = Math.random() * 100;
+            bubble.style.left = `${randomX}%`;
+            bubble.style.top = `${randomY}%`;
+            
+            // 随机颜色
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            bubble.style.color = randomColor;
+            
+            // 随机大小
+            const randomSize = Math.floor(Math.random() * 20) + 14;
+            bubble.style.fontSize = `${randomSize}px`;
+            
+            // 随机动画持续时间
+            const randomDuration = Math.random() * 3 + 2;
+            bubble.style.animation = `floatUp ${randomDuration}s ease-in-out forwards`;
+            
+            // 添加到页面
+            document.body.appendChild(bubble);
+            
+            // 动画结束后移除元素
+            setTimeout(() => {
+                bubble.remove();
+            }, randomDuration * 1000);
+        }
+    </script>
+</body>
+</html>
