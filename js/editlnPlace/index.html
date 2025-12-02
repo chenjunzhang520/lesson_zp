@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="./edit_in_place.js"></script>
+  <script>
+  // EditInPlace 类
+  // OOP 
+  // const appElement = document.getElementById('app');
+  const ep = new EditInPlace('slogan','有了肯德基， 生活好滋味',app); // 如果这里没有value但是js里有value，那么value就会覆盖掉html里的value
+  console.log(ep);
+  </script>
+</body>
+</html>
