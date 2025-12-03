@@ -21,7 +21,7 @@ function EditInPlace(id, value, ParentElement) {
 }
 EditInPlace.prototype = {
     // 封装了DOM操作
-    createElement: function () { 
+    createElement: function () {  
         // DOM 内存
         this.containerElement = document.createElement('div'); // containerElement 类型是 HTMLDivElement
         console.log(this.containerElement,'/////',
