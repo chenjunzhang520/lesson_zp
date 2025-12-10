@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>User List</title>
+        <style>
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+            th { background-color: #f4f4f4; }
+        </style>
+    </head>
+    <body>
+        <h1>Users</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </body>
+        <script>
+            // 后端接口准备好了
+            // DOM 编程
+            fetch('http://localhost:3000/users')
+                .then(res => res.json())
+                .then(data => {
+                    // console.log(data);
+                    const tbody = document.querySelector('tbody');
+                    tbody.innerHTML = data.map(uses => `
+                        <tr>
+                            <td>${uses.id}</td>
+                            <td>${uses.name}</td>
+                            <td>${uses.email}</td>
+                        </tr>
+                    `).join('');
+                })
+        </script>
+      </html>
