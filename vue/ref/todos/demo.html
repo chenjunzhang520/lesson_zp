@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2 id="app"></h2>
+    <input type="text" id="todo-input">
+    <script>
+        // 先找到DOM元素
+        const app = document.getElementById('app');
+        const todoInput = document.getElementById('todo-input');
+        todoInput.addEventListener('change', function(event) {
+            const todo = event.target.value.trim();
+            if(!todo) {
+                console.log('请输入任务');
+                return;
+            }
+            app.innerHTML = todo;
+        });
+    </script>
+</body>
+</html>
