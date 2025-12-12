@@ -9,7 +9,10 @@
     <h2 id="app"></h2>
     <input type="text" id="todo-input">
     <script>
-        // 先找到DOM元素
+        // 先找到DOM元素 命令式，机械的，性能差的
+        // js(V8 快) -> html(渲染引擎 慢)， vue底层也做，代替我们做
+        // vue 让新手写的代码质量更好，容易入门 v-for {{}} ref 
+        // 响应式，数据驱动，focus数据业务 
         const app = document.getElementById('app');
         const todoInput = document.getElementById('todo-input');
         todoInput.addEventListener('change', function(event) {
