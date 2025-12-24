@@ -11,6 +11,7 @@
   "description": "",
   "type": "module",
   "dependencies": {
+    "@langchain/core": "^1.1.8",
     "@langchain/deepseek": "^1.0.3",
     "chain": "^0.4.2",
     "dotenv": "^17.2.3"

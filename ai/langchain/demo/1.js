@@ -11,8 +11,24 @@ const prompt = PromptTemplate.fromTemplate(`
     {question}
     `)
 
-const promptStr = await prompt.fomat({
+const promptStr = await prompt.format({
     role: '前端面试官',
-    limit: 50,
+    limit: '50',
     question: '什么是闭包'
 })
+// const prompt2 = await prompt.format({
+//     role: '后端面试官',
+//     limit: '50',
+//     question: '什么是MVC'
+// })
+// console.log(promptStr, prompt2);
+const model = new ChatDeepSeek({
+    model: 'deepseek-reasoner',
+    temperature: 0.7,
+});
+
+const res = await model.invoke(promptStr);
+console.log(res.content);
+
+
+ 
