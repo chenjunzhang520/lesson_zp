@@ -32,7 +32,7 @@ const summaryChain = summaryPrompt.pipe(model);
 
 const fullChain = RunnableSequence.from([
     (input) => explainChain.invoke({topic: input.topic})
-    .then(res => res.text),
+    .then(res => res.text), 
     (explanation) => summaryChain.invoke({ explanation }).then(res => `知识点：${explanation} 总结：${res.text}`) 
 ])
 
