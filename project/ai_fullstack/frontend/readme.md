@@ -24,3 +24,6 @@
   compilerOptions 目录输出建议
   baseUrl
   path
+
+
+  npx 是 Node.js 自带的工具，用于临时安装并执行 npm 包中的命令，无需全局或本地预先安装。
