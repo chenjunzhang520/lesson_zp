@@ -25,5 +25,14 @@
   baseUrl
   path
 
+- npx shadcn@latest init
+  npx 是 Node.js 自带的工具，用于临时安装并**执行** npm 包中的命令，无需全局或本地预先安装。
+  不用预先安装 ， 试用，测试那边，用完会删除 
+- shadcn 提供命令行
+  - button
+  npx shadcn@latest add button
 
-  npx 是 Node.js 自带的工具，用于临时安装并执行 npm 包中的命令，无需全局或本地预先安装。
+### 路由
+- 路由懒加载(性能优化的关键)
+- suspense + lazy 实现路由懒加载
+- 自定义loading 组件
