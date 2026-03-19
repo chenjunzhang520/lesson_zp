@@ -1,18 +1,37 @@
-import { Home, User } from 'lucide-react'; // 图标字体库
+import { 
+  Home,
+  User,
+  ListOrdered,
+  MessageCircle 
+} from 'lucide-react'; // 图标字体库
 import {
   useNavigate,
   useLocation
 } from 'react-router-dom';
+import { cn } from '@/lib/utils'; // 组合类名
+import { useUserStore } from '@/store/useUserStore';
+import { needsLoginPath } from '@/App';
 
 export default function BottomNav() {
   const navigate  = useNavigate();
   const { pathname } = useLocation();
+  const { islogin } = useUserStore((state) => state);
   // console.log(location, '/////');
   const tabs = [
     {
       label: "首页",
       path: "/",
       icon: Home
+    },
+    {
+      label: '聊天',
+      path: '/chat',
+      icon: ListOrdered
+    },
+    {
+      label: '订单',
+      path: '/order',
+      icon: MessageCircle
     },
     {
       label: "我的",
@@ -25,6 +44,10 @@ export default function BottomNav() {
     if (path === pathname) {
       return;
     }
+    if (needsLoginPath.includes(path) && !islogin) {
+      navigate("/login");
+      return;
+    }
     navigate(path);
   }
 
@@ -35,14 +58,20 @@ export default function BottomNav() {
     {
       tabs.map((tab) => {
         const Icon = tab.icon;
+        const isActive = pathname === tab.path;
+
         return (<button 
           key={tab.path}
           onClick={() => handleNav(tab.path)}
           className="flex flex-col items-center justify-center 
           w-full h-full space-y-1"
         >
-          <Icon size={24} />
-          <span className="text-xs font-medium">
+          <Icon 
+             size={24}
+             className={cn("transition-colors", isActive ? "text-primary" : "text-muted-foreground")}
+             />
+          <span className={cn("text-xs transition-colors", isActive ? "text-primary font-medium" : 
+            "text-muted-foreground")}>
             {tab.label}
           </span>
         </button>

@@ -36,3 +36,5 @@
 - 路由懒加载(性能优化的关键)
 - suspense + lazy 实现路由懒加载
 - 自定义loading 组件
+- 路由守卫
+  - user store islogin 
