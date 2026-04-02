@@ -38,3 +38,69 @@
 - 自定义loading 组件
 - 路由守卫
   - user store islogin 
+
+### BackToTop组件
+- 通用组件
+- 自有状态isVisible 
+- onScroll 判断一个阈值
+- scroll事件频繁触发，性能优化
+  节流 utils 目录下 工具函数 
+- 组件卸载时 移除事件监听，防止内存泄漏。
+
+### 幻灯片组件 slides 
+- shadcn 提供了 Carousel、CarouselContent、CarouselItem、
+  一组组件，层次结构
+- 自动播放的功能作为插件引入， shadcn 简单性能好，定制性更好
+  useRef  持久化可变的对象
+  plugins=[]
+- api 向外暴露Carousel 的各种功能
+  selectedIndex 私有状态
+  api onnSelect 方法 改变之
+- 指示点 
+  循环输出
+  动态类名
+- css 
+  - transition-all 
+  - gradient  线性渐变， 取代图片(渐变色)做背景
+  性能优化 图片做背景 http下载的开销，减少http并发数
+
+### store
+- user 全局共享 
+- 每个页面级别组件都有自己独立的store
+  组件 UI 和 数据分离 
+
+### Post List 
+- 数据怎么提供呢？
+  - 真实数据 在后端
+  - axios 请求 后端api 
+  - 前端要等待后端接口吗？不能等，前后端分离的基础上，
+  前端可以自行解决数据需求？ mock 一下 伪造请求
+  api接口文档 
+  GET /api/posts?page=1&limit=10 返回内容
+  {
+    status: 200,
+    list: Post[]
+  }
+  只要切换后端真正的地址，无缝对接
+
+### mockjs 
+- 前端接口伪造，开发时候用，上线前切换成后端接口，
+  vite 启动 mock 
+- 前后端确立接口开发文档
+### posts mock
+- 阅读接口文档
+- mockjs 语法
+  mockPath post.js
+  export default {
+    {
+      url:,
+      method:,
+      response:(req, res) => {}
+    }
+  }
+  - mockjs 随机功能  @ 
+  - 分页机制
+    - page, limit parseInt 
+    - start, end, total, totalPage 
+    - slice 
+    - pagination
