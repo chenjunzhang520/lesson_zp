@@ -104,3 +104,12 @@
     - start, end, total, totalPage 
     - slice 
     - pagination
+
+## JWT登录
+- http 无状态的
+Cookie Authorization token 身份令牌
+- 颁发令牌 token  
+- jwt  
+  pnpm i json(用户身份对象)web(形式)token(令牌)
+  用户名+密码 {id:1, name:'admin'} json 加密成一个token 
+  请求时，再传过来 服务器端 decode 得到用户对象，
