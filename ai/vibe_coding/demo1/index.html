@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>立冬快乐 - 温馨祝福</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f8f4e8 0%, #e8dccc 100%);
+            color: #333;
+            overflow: hidden;
+            min-height: 100vh;
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* 背景雪花效果 */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10px) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* 主容器 */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* 标题样式 */
+        .title {
+            font-size: 3rem;
+            color: #8b4513;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* 副标题样式 */
+        .subtitle {
+            font-size: 1.2rem;
+            color: #a0522d;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        /* 提示文字 */
+        .hint {
+            position: absolute;
+            bottom: 40px;
+            color: #cd853f;
+            font-size: 1rem;
+            opacity: 0.8;
+            animation: fadeInOut 4s ease-in-out infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0.4;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        /* 祝福语样式 */
+        .blessing {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #8b4513;
+            font-weight: 500;
+            text-align: center;
+            pointer-events: none;
+            user-select: none;
+            opacity: 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 装饰元素 */
+        .decorations {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .decoration {
+            position: absolute;
+            opacity: 0.15;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .hint {
+                font-size: 0.9rem;
+                bottom: 20px;
+            }
+            
+            .blessing {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="snow-container"></div>
+    <div class="decorations"></div>
+    <div class="container">
+        <h1 class="title">立冬快乐</h1>
+        <p class="subtitle">点击屏幕，接收温暖祝福</p>
+        <p class="hint">愿这个冬天，温暖与你常在</p>
+    </div>
+
+    <script>
+        // 立冬祝福语文本数组，包含至少8条不同风格的祝福
+        const blessings = [
+            "愿你暖阳常伴，冬日不寒",
+            "饺子已煮好，幸福正冒泡",
+            "立冬初寒，问候暖心，愿你三冬暖，愿你春不寒",
+            "北风萧瑟，岁月温柔，愿你这个冬天，有人陪，有暖享",
+            "立冬时节，愿你心中有阳光，脚下有力量",
+            "寒来暑往，秋收冬藏，愿你的冬天，温暖且漫长",
+            "天气转凉，记得添衣，愿你被世界温柔以待",
+            "冬日可爱，人间值得，愿你所有的美好，都如期而至",
+            "立冬进补，来年打虎，愿你身体康健，万事顺遂",
+            "雪花飘落，温暖依旧，愿你的冬天，充满爱与希望"
+        ];
+
+        // 装饰元素数组
+        const decorations = [
+            { type: 'dumpling', size: '50px', left: '10%', top: '20%' },
+            { type: 'scarf', size: '70px', right: '15%', top: '30%' },
+            { type: 'snowflake', size: '40px', left: '25%', bottom: '25%' },
+            { type: 'dumpling', size: '60px', right: '10%', bottom: '20%' },
+            { type: 'scarf', size: '55px', left: '20%', top: '60%' }
+        ];
+
+        // 颜色数组，用于随机生成祝福文字颜色
+        const colors = ['#8b4513', '#a0522d', '#cd853f', '#d2691e', '#bc8f8f'];
+
+        // 初始化雪花效果
+        function initSnow() {
+            const snowContainer = document.querySelector('.snow-container');
+            const snowCount = window.innerWidth < 768 ? 50 : 100;
+            
+            for (let i = 0; i < snowCount; i++) {
+                createSnowflake(snowContainer);
+            }
+        }
+
+        // 创建单个雪花
+        function createSnowflake(container) {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            
+            // 随机大小
+            const size = Math.random() * 8 + 2;
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+            
+            // 随机位置
+            snowflake.style.left = `${Math.random() * 100}vw`;
+            
+            // 随机动画持续时间和延迟
+            const duration = Math.random() * 10 + 10;
+            snowflake.style.animationDuration = `${duration}s`;
+            snowflake.style.animationDelay = `${Math.random() * 5}s`;
+            
+            // 随机不透明度
+            snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+            
+            container.appendChild(snowflake);
+            
+            // 雪花动画结束后重新创建
+            snowflake.addEventListener('animationend', () => {
+                snowflake.remove();
+                createSnowflake(container);
+            });
+        }
+
+        // 初始化装饰元素
+        function initDecorations() {
+            const decorationsContainer = document.querySelector('.decorations');
+            
+            decorations.forEach(decor => {
+                const element = document.createElement('div');
+                element.classList.add('decoration');
+                
+                // 设置样式
+                element.style.width = decor.size;
+                element.style.height = decor.size;
+                if (decor.left) element.style.left = decor.left;
+                if (decor.right) element.style.right = decor.right;
+                if (decor.top) element.style.top = decor.top;
+                if (decor.bottom) element.style.bottom = decor.bottom;
+                
+                // 设置背景颜色代替图片，保持简约风格
+                if (decor.type === 'dumpling') {
+                    element.style.backgroundColor = '#f5deb3';
+                    element.style.borderRadius = '50% 50% 30% 30%';
+                } else if (decor.type === 'scarf') {
+                    element.style.backgroundColor = '#cd5c5c';
+                    element.style.borderRadius = '20px';
+                    element.style.transform = 'rotate(45deg)';
+                } else if (decor.type === 'snowflake') {
+                    element.style.backgroundColor = '#fffafa';
+                    element.style.borderRadius = '50%';
+                }
+                
+                decorationsContainer.appendChild(element);
+            });
+        }
+
+        // 创建祝福动画
+        function createBlessings() {
+            // 清除之前的祝福
+            const existingBlessings = document.querySelectorAll('.blessing');
+            existingBlessings.forEach(blessing => blessing.remove());
+            
+            // 随机生成祝福数量
+            const count = Math.floor(Math.random() * 5) + 8; // 8-12条祝福
+            
+            for (let i = 0; i < count; i++) {
+                // 随机延迟，使祝福陆续出现
+                setTimeout(() => {
+                    createSingleBlessing();
+                }, i * 150);
+            }
+        }
+
+        // 创建单个祝福
+        function createSingleBlessing() {
+            // 随机选择祝福语文本
+            const text = blessings[Math.floor(Math.random() * blessings.length)];
+            
+            // 创建祝福元素
+            const blessing = document.createElement('div');
+            blessing.classList.add('blessing');
+            blessing.textContent = text;
+            
+            // 设置随机颜色
+            blessing.style.color = colors[Math.floor(Math.random() * colors.length)];
+            
+            // 设置初始位置（屏幕中心）
+            blessing.style.left = '50%';
+            blessing.style.top = '50%';
+            blessing.style.transform = 'translate(-50%, -50%) scale(0)';
+            
+            // 添加到页面
+            document.body.appendChild(blessing);
+            
+            // 动画属性
+            const duration = Math.random() * 2 + 3; // 3-5秒
+            const maxDistance = window.innerWidth < 768 ? 100 : 200; // 根据屏幕大小调整
+            
+            // 随机角度和距离
+            const angle = Math.random() * Math.PI * 2; // 0-360度
+            const distance = Math.random() * maxDistance + 50; // 50-250px
+            
+            // 计算终点位置
+            const endX = Math.cos(angle) * distance;
+            const endY = Math.sin(angle) * distance;
+            
+            // 使用requestAnimationFrame执行动画
+            let startTime = null;
+            function animate(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+                
+                // 缓动函数 - 使用easeOutCubic
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                
+                // 更新位置和透明度
+                const currentX = endX * easeProgress;
+                const currentY = endY * easeProgress;
+                const scale = easeProgress * 1.2;
+                const opacity = 1 - easeProgress;
+                
+                blessing.style.transform = `translate(-50%, -50%) translate(${currentX}px, ${currentY}px) scale(${scale})`;
+                blessing.style.opacity = opacity;
+                
+                // 继续动画
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // 动画结束，移除元素
+                    setTimeout(() => {
+                        blessing.remove();
+                    }, 100);
+                }
+            }
+            
+            // 开始动画
+            requestAnimationFrame(animate);
+        }
+
+        // 初始化页面
+        function init() {
+            initSnow();
+            initDecorations();
+            
+            // 页面加载时自动播放一次祝福
+            setTimeout(createBlessings, 500);
+            
+            // 点击页面任意位置触发祝福
+            document.addEventListener('click', createBlessings);
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', init);
+        
+        // 窗口大小改变时重新初始化雪花
+        window.addEventListener('resize', () => {
+            const snowContainer = document.querySelector('.snow-container');
+            snowContainer.innerHTML = '';
+            initSnow();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // fetch('https://api.github.com/users/shunwuyu/repos')
+        //     .then(res => {
+        //         // console.log(res.json());
+        //         return res.json()
+        //     }) // 函数
+        //     .then(data => {
+        //         console.log(data);
+        //     })
+        // es8 async 修饰函数 
+        const main = async () => {
+            // await 等待右边的promise 等待，异步变同步
+            // resolved resolve(data) 交给左边的变量
+            const res = await fetch('https://api.github.com/users/shunwuyu/repos');
+            console.log(res);
+            console.log(111);
+            const data = await res.json();
+            console.log(data);
+            
+        }
+        main();
+    </script>
+</body>
+</html>

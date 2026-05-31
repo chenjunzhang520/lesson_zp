@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>继承</title>
+</head>
+<body>
+    <script>
+        function Animal() {
+            // this 除了由运行的时候决定的，还可以由调用的时候指定
+            // 绑定this 
+            console.log(this,'/////');
+            this.species = '动物';
+        }
+
+        function Cat(name,color) {
+            // 
+            console.log(this);
+            // apply 用于指定函数运行时this 指向，被绑定了
+            // 第一个参数就是指定的this指向
+            Animal.apply(this); // 函数运行， 指定函数内部的this 是cat实例
+            this.name = name;
+            this.color = color;
+        }
+        // 怎么继承 父类的属性和方法我都要
+        const cat = new Cat('加菲猫','橘色');
+        console.log(cat);
+    </script>
+</body>
+</html>

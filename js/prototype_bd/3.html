@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Cat() {
+        }
+        Cat.prototype.species = '猫科动物';
+        // js 动态语言
+        const cat = new Cat();
+        cat.species = 'hello';
+        console.log(cat,Cat.prototype.species);
+    </script>
+</body>
+</html>

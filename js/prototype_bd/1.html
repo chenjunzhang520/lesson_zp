@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>继承</title>
+</head>
+<body>
+    <script>
+        // 父类
+        function Animal(name,age) {
+            this.name = name;
+            this.age = age;
+        }
+        Animal.prototype.species = '动物';
+        function Cat(name,age,color) {
+            // {} 空对象 <- this
+            // 构造函数式继承
+            // 手动指定
+            // Animal.call(this,name,age);
+            Animal.apply(this,[name,age]);
+            console.log(this,'////');
+        }
+        Cat.prototype = Animal.prototype;// 直接继承ptototype
+        // Cat.prototype = new Animal();// prototype 模式
+        Cat.prototype.constructor = Cat;
+        const cat = new Cat('加菲猫',2,'黄色')
+        console.log(cat.constructor,cat.species);
+        console.log(Animal.prototype.constructor);
+    </script>
+</body>
+</html>

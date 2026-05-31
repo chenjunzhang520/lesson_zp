@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Cat(name,color) {
+            this.name = name;
+            this.color = color;
+            // 浪费 方法和共有属性 函数的原型属性
+            // this.type = '猫科动物',
+            // this.eat = function() {alert('喜欢jerry')}
+        }
+        Cat.prototype.type = '猫科动物';
+        Cat.prototype.eat = function() {
+            console.log("eat jerry");
+        }
+        var cat1 = new Cat('tom','黑色');
+        var cat2 = new Cat('咖啡猫','橘色');
+        console.log(cat1.type,cat2.type);
+        cat1.type = '铲屎官的主人';
+        console.log(cat1.type,cat2.type);
+    </script>
+</body>
+</html>

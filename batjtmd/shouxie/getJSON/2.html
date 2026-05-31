@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const getJSON = (url) =>
+            // 返回promise 对象， Promsie类里定义了thrn 方法
+             new Promise((resolve, reject) => {
+                // executor 执行器函数 同步
+                // 将耗时的异步任务放在里面
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.send();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        // 数据 xhr/fetch 数据交换的格式 json
+                        // console.log(xhr.responseText);
+                        const data = JSON.parse(xhr.responseText);
+                        resolve(data); // 
+                    }
+                }
+                xhr.onerror = function () {
+                    reject(new Error('请求出错'))
+                }
+            });
+        
+        // promise 是es6提供的异步解决方案， 优于回调函数
+        // promise 实例 then
+        getJSON('https://api.github.com/users/shunwuyu')
+        // promise
+        // promise 实例 resolve 后运行
+          .then((data) => { 
+            console.log(data);
+        })
+        .catch((err) => { 
+            console.log(err);
+        });
+    </script>
+</body>
+</html>

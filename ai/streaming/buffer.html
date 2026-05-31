@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 Buffer</title>
+</head>
+<body>
+    <h1>Buffer</h1>
+    <div id="output"></div>
+    <script>
+        // JS 二进制、 数组缓存
+        // html5 编码对象
+        const encoder = new TextEncoder();
+        console.log(encoder);
+        const myBuffer = encoder.encode("你好 HTML5");
+        console.log(myBuffer);
+        // 数组缓存 12 字节
+        // 创建一个缓冲区
+        const buffer = new ArrayBuffer(12);
+        // 创建一个视图(View) 来操作这个缓冲区
+        const view = new Uint8Array(buffer);
+        for (let i = 0; i < myBuffer.length; i++) {
+            // console.log(myBuffer[i]);
+            view[i] = myBuffer[i];
+        }
+
+        const decoder = new TextDecoder();
+        const originalText = decoder.decode(buffer);
+        console.log(originalText);
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = `
+          完整数据：[${view}] <br>
+          第一个字节：${view[0]} <br>
+          缓冲区的字节长度：${buffer.byteLength} <br>
+          原来的文本：${originalText} 
+        `
+        
+    </script>
+</body>
+</html>

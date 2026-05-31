@@ -1,0 +1,9 @@
+var name = "123";
+function showName() {
+    console.log(name); // undefined
+    if (false) {  // 块级作用域
+        var name = "456";
+    }
+    console.log(name);
+}
+showName();

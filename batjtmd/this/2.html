@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var a = {
+            name: "Cherry",
+            func1: function() {
+                console.log(this.name);
+            },
+            func2: function() {
+                // this 
+                console.log(this);
+                // call apply 指定this 指向
+                setTimeout(function() {
+                    // 不一样
+                    console.log(this);
+                    this.func1();
+                }, 3000);
+        }
+}
+console.log(a.func1.call(a));
+const func = a.func1.bind(a);
+func();
+    </script>
+</body>
+</html>

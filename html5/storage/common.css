@@ -1,0 +1,56 @@
+html {
+    box-sizing: border-box;
+    min-height: 100vh;
+    display: flex; /* 弹性格式化上下文 */
+    justify-content: center;/* 盒子 */
+    align-items: center; 
+    text-align: center; /* 行内居中 */
+}
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+.wrapper {
+    padding: 20px;
+    max-width: 350px;
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h2 {
+    text-align: center;
+    margin: 0;
+    font-weight: 200;
+}
+.plates {
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    list-style: none;
+}
+.plates li {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 10px 0;
+    font-weight: 100;
+    display: flex; /* 设置弹性格式化上下文 */ 
+} 
+.plates lable {
+    flex: 1;
+    cursor: pointer;
+}
+.plates input {
+    display: none;
+}
+.plates input + label:before {
+     content: "⬜️";
+     margin-right: 10px;
+}
+.plates input:checked + label:before {
+    content: "✅";
+}
+.add-items {
+    margin-top: 20px;
+}
+.add-items input {
+    padding: 10px;
+    outline: 5px solid rgba(14, 14, 211, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
