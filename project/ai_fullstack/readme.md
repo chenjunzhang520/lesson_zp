@@ -43,8 +43,24 @@
   /   Home  延迟一下About 阻止加载
   /About About 
 
-
-
+### 路由有多少种？
+- 普通路由
+- 动态路由 /product/:id
+- 通配路由 * 
+- 嵌套路由 Outlet
+  <Outlet> 是 React Router DOM 中的组件，用于在父路由元素中渲染其子路由匹配到的内容。
+- 鉴权路由(路由守卫) ProtectRoute
+- redirect 重定向路由 Navigate
+### 路由生成访问历史
+  history 栈 先进后出
+  replace redirect 跳转，会替换当前的历史记录 
+### 单页应用
+- 传统的开发是多页的，基于http 请求，每次url 发生改变后，去服务器重新请求整个页面。
+  体验不好，页面会白一下
+- 单页应用 react-router-dom html5 history 
+  前端路由
+  路由改变后
+  前端会收到一个事件，将匹配的新路由显示在页面上
 
 
 
@@ -193,7 +209,7 @@
   api接口文档 
   GET /api/posts?page=1&limit=10 返回内容
   {
-    status: 200,
+    s4吃BEQX 3456789-=00,
     list: Post[]
   }
   只要切换后端真正的地址，无缝对接
