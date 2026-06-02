@@ -62,6 +62,14 @@
   路由改变后
   前端会收到一个事件，将匹配的新路由显示在页面上
 
+## typescript 
+JavaScript 超级，强类型静态语言
+- 安装 ts
+  npm install -g typescript
+- ts 的优点
+  - 静态类型
+  - 边写边检查bug 
+  - 编译时检查类型错误
 
 
 
