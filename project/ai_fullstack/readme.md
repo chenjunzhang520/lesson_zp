@@ -80,11 +80,65 @@ JavaScript 超级，强类型静态语言
 - 组件 = UI + State 
 - store 将状态存到store仓库中管理
   全局共享
+- 基于hooks思想实现的
 
+## 数据库设计 
+- 关系型数据库  mysql\postgresql
+是一种以二位表格(行\列) 组织存储数据，通过主键(primary key) 
+外键建立表格间逻辑关联，遵循ACID 事务特性保证数据一致性和可靠性的数据库
+表Table users 类
+row 实例 
+column 属性
+### 主键 
+- 词典 
+  索引目录
+- 唯一的， 自增的 
+- 高效 利用索引
+### 唯一索引 uniq  约束
+  - username   唯一性， 正确性
+### 外键 约束 foreign key
+  - posts 文章id， userId 
+  - id  引用 users 表的主键
+  posts.userId == user.id 关联
+### 普通外键 key 
+  - 不能乱建
+  - 查询的频繁度
 
+### 文章系统
+- 文章表 posts
+- 用户表 users
+- 评论表 comments
+- 点赞表 likes 
+- 标签表 tags 
+- 收藏表 favorites
 
+### 连接
+- 左连接 left join
+  左表所有数据都显示，右表匹配的显示，不匹配的null
+- 右连接 right join
+  右表所有数据都显示，左表匹配的显示，不匹配的null
+- 内连接 inner join
+  左表和右表匹配的显示，不匹配的不显示
 
+### ACID
+- 事务 transaction
+数据库操作的最小单位，
+A Atomity  原子性
+要么都成功，要么全部失败回滚。
+转账 扣A的100元，和增加B的100元。 转账事务
+- A 成功  type out 减少总金额 先 成功。回滚失败
+- B 成功  type in 增加总金额  后 失败， 回滚A的操作
 
+C Consistency  一致性
+数据库从一个一致状态转换到另一个一致状态。
+转账事务中，A和B的总金额保持不变。
+
+I Isolation  隔离性
+并发执行的事务 相互独立， 互不干扰。
+两笔转账， A转B 100元， C转B 200元
+
+D Durability  持久性
+事务一旦提交， 对数据库的改变是永久的， 不会因为系统故障而丢失。
 
 
 
