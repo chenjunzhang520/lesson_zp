@@ -22,3 +22,12 @@ model User {
   updatedAt   DateTime?  @default(now()) @map("updated_at") @db.Timestamptz(6)
   @@map("users")
 }
+
+model Post {
+  id          Int        @id @default(autoincrement())
+  title       String     @db.VarChar(255)
+  content     String?    @db.Text
+  userId      Int?
+  user        User?      @relation(field: [userId], references: [id], onDelete: SetNull)
+  @@index([userId])
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul id="todos"></ul>
+    <script>
+        // promise 
+        // fetch('http://localhost:8080/todos')
+        // .then(res => res.json()) // 异步
+        // .then(data => { // 异步
+        //     // console.log(data);
+        //     todos.innerHTML = data.map(todo => `<li>${todo.title}</li>`).join('');
+        // })
+        async function main() {
+            // then 可读性没有特别好
+            // await 后面一般是promise 
+            const res = await fetch('http://localhost:8080/todos');
+            const data = await res.json();
+            todos.innerHTML = data.map(todo => `<li>${todo.title}</li>`).join('');
+        }
+        main();
+    </script>
+</body>
+</html>
