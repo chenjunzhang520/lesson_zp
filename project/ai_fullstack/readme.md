@@ -362,3 +362,6 @@ findMany        ===            Select
 @default(Increment())
 @db.Varchar(255)
 @unique 
+### migrate 数据表的迁移
+- 方便
+- 留下日志

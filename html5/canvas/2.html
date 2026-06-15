@@ -1,0 +1,37 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        <!-- dom树 + canvas渲染区域 -->
+        <canvas id="myCanvas" width="600" height="400" style="border: 1px solid #333;">
+            你的浏览器不支持Canvas (旧IE会显示这段文字)
+        </canvas>
+        <script>
+            const canvas = document.querySelector('#myCanvas');
+            // 3d 激发显存 GPU能力 
+            const ctx = canvas.getContext('2d');
+            let x = 20;
+            const y = 20;
+            const width = 100;
+            const height = 80;
+            const speed = 3;
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#4399e1';
+                ctx.fillRect(x, y, width, height);
+                x += speed;
+                if(x > canvas.width) {
+                    x = -width;
+                }
+                // 请求关键帧动画
+                requestAnimationFrame(animate);
+            }
+            animate();
+        </script>
+    </body>
+    </html>

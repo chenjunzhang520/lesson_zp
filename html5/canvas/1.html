@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 炫酷新特性Canvas画布</title>
+</head>
+<body>
+    <!-- width/height是画布实际像素尺寸 -->
+    <canvas id="myCanvas" width="600" height="400" style="border: 1px solid #333;">
+        你的浏览器不支持Canvas (旧IE会显示这段文字)
+    </canvas>
+    <script>
+        // 画布元素
+        const canvas = document.querySelector('#myCanvas');
+        // 绘画的上下文对象
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#429911'; // 填充颜色
+        ctx.fillRect(20, 20, 100, 80); // 绘制一个矩形
+
+        ctx.strokeStyle = '#f56565';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(150, 20, 100, 80); 
+        ctx.clearRect(50, 50, 40, 30);
+        
+    </script>
+</body>
+</html>

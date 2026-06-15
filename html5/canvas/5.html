@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>炫酷粒子背景</title>
+    <style>
+        /* 去除页面默认边距，防止出现滚动条 */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden; 
+            background-color: #0f0f1a; /* 深色背景更能衬托粒子效果 */
+        }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<script>
+    // 1. 初始化画布与上下文
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, particles, mouse;
+
+    // 监听窗口大小变化，实现全屏自适应
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // 2. 记录鼠标位置
+    mouse = { x: null, y: null, radius: 150 }; // 鼠标影响范围
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+
+    // 3. 粒子类 (Particle Class)
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.size = Math.random() * 2 + 1; // 粒子大小
+            this.baseX = this.x;
+            this.baseY = this.y;
+            this.density = (Math.random() * 30) + 1; // 鼠标推力阻力
+        }
+
+        // 更新粒子状态
+        update() {
+            // 计算鼠标与粒子的距离
+            let dx = mouse.x - this.x;
+            let dy = mouse.y - this.y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+            let forceDirectionX = dx / distance;
+            let forceDirectionY = dy / distance;
+            let force = (mouse.radius - distance) / mouse.radius;
+            let pushX = forceDirectionX * force * this.density;
+            let pushY = forceDirectionY * force * this.density;
+
+            // 如果鼠标在影响范围内，粒子会被推开；否则缓慢回归原位
+            if (distance < mouse.radius) {
+                this.x -= pushX;
+                this.y -= pushY;
+            } else {
+                if (this.x !== this.baseX) {
+                    let dx = this.x - this.baseX;
+                    this.x -= dx / 10;
+                }
+                if (this.y !== this.baseY) {
+                    let dy = this.y - this.baseY;
+                    this.y -= dy / 10;
+                }
+            }
+        }
+
+        // 绘制粒子
+        draw() {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.fill();
+        }
+    }
+
+    // 4. 初始化粒子群
+    function init() {
+        particles = [];
+        // 根据屏幕大小动态生成粒子数量，保证视觉效果
+        let numberOfParticles = (width * height) / 9000; 
+        for (let i = 0; i < numberOfParticles; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    // 5. 绘制粒子之间的连线
+    function connect() {
+        for (let a = 0; a < particles.length; a++) {
+            for (let b = a; b < particles.length; b++) {
+                let dx = particles[a].x - particles[b].x;
+                let dy = particles[a].y - particles[b].y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                // 当粒子距离小于40时绘制连线，并根据距离改变透明度
+                if (distance < 40) {
+                    let opacity = 1 - (distance / 40);
+                    ctx.strokeStyle = `rgba(100, 200, 255, ${opacity})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[a].x, particles[a].y);
+                    ctx.lineTo(particles[b].x, particles[b].y);
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    // 6. 动画主循环
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+        }
+        connect();
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+</script>
+</body>
+</html>
