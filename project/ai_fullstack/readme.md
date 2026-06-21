@@ -365,3 +365,4 @@ findMany        ===            Select
 ### migrate 数据表的迁移
 - 方便
 - 留下日志
+### seeds 
