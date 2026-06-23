@@ -366,3 +366,12 @@ findMany        ===            Select
 - 方便
 - 留下日志
 ### seeds 
+### DTO Data Transfer Object 数据传输对象
+从前端 -》 后端 -》 控制器 -》 service  transfer 过程
+- dto/post-query.dto.ts
+- dto/post-new.dto.ts
+- class-validator 验证器 
+  将参数的校验 流程化, 规范化
+- 全局配置一下
+### @prisma/client 
+- 怎么给service提供 client 代替db 
