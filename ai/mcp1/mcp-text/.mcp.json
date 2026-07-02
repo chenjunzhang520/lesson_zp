@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "E:/LESSON_ZP/ai/mcp1/mcp-text"
+      ]
+    }
+  }
+}
