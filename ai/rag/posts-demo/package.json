@@ -1,0 +1,16 @@
+{
+  "name": "posts-demo",
+  "version": "1.0.0",
+  "description": "Retrival 检索\r Augment 增强\r Generate 生成\r ## 自然语义搜索\r - data/posts.json 检索的范围\r - 有哪些vue相关的内容？\r   正则, like '%vue%' 精确的传统搜索\r   文字匹配？\r   \"酸辣土豆丝的做法....\"\r   \"马铃薯怎么做？\"\r - question emdedding 向量化 语义\r - 内容都embedding \r - rag 向量相似度计算",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "openai": "^6.45.0"
+  }
+}
