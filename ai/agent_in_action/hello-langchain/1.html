@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// 封装成函数，调用时才创建Promise、启动定时器
+function getWeather() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({ temp: 38, conditions: 'Sunny with Clouds'})
+        }, 2000)
+    })
+}
+function getTweets() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(['I like cake', 'BBQ is good too!'])
+        }, 500)
+    })
+}
+
+// async function main() {
+//     console.time("my-operation");
+//     // 第一个await：创建weather并等待2000ms
+//     const weatherData = await getWeather();
+//     // 上面走完，才会执行这里，再等500ms，串行叠加
+//     const tweetsData = await getTweets();
+//     console.log(weatherData);
+//     console.log(tweetsData);
+//     console.timeEnd("my-operation"); // 总耗时≈2500ms
+// }
+// weather和tweets 不相互影响，两者都解决了，再往下走
+const main = async () => {
+    console.time("my-operation");
+    // 一起执行
+    const [weatherData, tweetsData] = await Promise.all([getWeather(), getTweets()])
+    console.log(weatherData);
+    console.log(tweetsData);
+    console.timeEnd("my-operation"); 
+}
+main();
+</script> 
+</body>
+</html>
