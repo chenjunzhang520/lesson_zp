@@ -1,0 +1,21 @@
+{
+  "name": "mcp-demo",
+  "version": "1.0.0",
+  "description": "- 这里的 tool有什么问题？\r   1. 只能在我们这个项目用， 不能在其他项目用\r   2. node 写的， 如果 java/python/rust 写的tool呢？",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@langchain/core": "^1.2.2",
+    "@langchain/mcp-adapters": "^1.1.3",
+    "@langchain/openai": "^1.5.4",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "chalk": "^5.6.2",
+    "dotenv": "^17.4.2",
+    "zod": "^4.4.3"
+  }
+}

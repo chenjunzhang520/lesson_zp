@@ -9,7 +9,7 @@ import {
 // mini cursor  I/O， 命令行 
 // agent tool， 自动化 
 // const command = 'ls -la';  // command linus 命令 shell 脚本
-const command = 'pnpm create react-todo-app --template typescript'
+const command = 'npm init vite react-todo-app --template react-ts'
 // 切一下，第一项 cmd ， rest 运算符 所有的参数数组
 const [cmd, ...args] = command.split(' ');
 const cwd = process.cwd(); // 当前工作目录
