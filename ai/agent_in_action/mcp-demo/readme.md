@@ -26,3 +26,21 @@ ai agent 是MCP 客户端(host) ,可以通过MCP 协议调用各种MCP Server, c
 
 ## MCP Tool
 本质tool,
+
+## resources
+- MCP stdio/http 跨进程提供 Tool/Resource/Prompt
+  Tool 最常见 和Tool Use 没啥区别， 跨进程(抛饵) 
+  - IPC 
+    父子进程 child_process 
+    其他语言、远程 client (child_process, MultiServerClient) 和 MCP Server 通信
+  - js 单线程 异步无阻塞 主线程里面的异步 
+- resource 可以作为SystemMessage prompt的一部分 成为Context 
+  - server 里 registerResource 注册资源
+    URI docs://  是资源的唯一标识符， 用于在MCP Server 里唯一标识一个资源
+  - host 
+    MultiServerClient getResource 获取资源
+    Object.entries 拼成字符串
+    RAG之外 丰富上下文的一种手段  文档，没有那么长的 
+    上下文窗口大小
+    RAG 先检索  
+

@@ -1,0 +1,21 @@
+{
+  "name": "remote-mcp",
+  "version": "1.0.0",
+  "description": "MCP本质上还是tool， 只不过还包了一层进程，可以通过stdio和http来访问。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@langchain/core": "^1.2.2",
+    "@langchain/mcp-adapters": "^1.1.3",
+    "@langchain/openai": "^1.5.5",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "chalk": "^5.6.2",
+    "dotenv": "^17.4.2",
+    "zod": "^4.4.3"
+  }
+}
