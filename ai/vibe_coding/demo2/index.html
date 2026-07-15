@@ -4,235 +4,1037 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>心灵治愈空间</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     <style>
-        body {
+        /* ========== CSS 变量 ========== */
+        :root {
+            --bg-start: #ffecd2;
+            --bg-end: #fcb69f;
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --msg-bot-bg: rgba(255, 255, 255, 0.85);
+            --msg-user-bg: rgba(200, 235, 201, 0.85);
+            --text-primary: #4a3728;
+            --text-secondary: #7a6455;
+            --accent: #e07c5a;
+            --input-bg: rgba(255, 255, 255, 0.75);
+            --shadow-soft: rgba(0, 0, 0, 0.08);
+            --shadow-medium: rgba(0, 0, 0, 0.12);
+        }
+
+        /* ========== 基础重置 ========== */
+        *, *::before, *::after {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        /* ========== 页面背景 ========== */
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
             min-height: 100vh;
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            overflow-x: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            overflow: hidden;
+            color: var(--text-primary);
+            position: relative;
         }
-        
-        .container {
+
+        /* 噪点纹理层 */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 256px 256px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ========== 背景粒子画布 ========== */
+        #particle-canvas {
+            position: fixed;
+            inset: 0;
             width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
-        
-        .main-slogan {
-            font-size: 3rem;
-            color: #e74c3c;
-            margin-bottom: 40px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 2s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .buttons-container {
+
+        /* ========== 页面通用样式 ========== */
+        .page {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            z-index: 5;
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
         }
-        
-        .healing-button {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            border: none;
-            border-radius: 30px;
-            padding: 15px 25px;
+
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        /* ========== 首页（欢迎页） ========== */
+        .page-welcome {
+            padding: 24px;
+        }
+
+        .welcome-content {
+            text-align: center;
+            max-width: 480px;
+            animation: welcomeFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes welcomeFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-title {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 3rem;
+            color: var(--accent);
+            text-shadow:
+                0 1px 0 rgba(255,255,255,0.6),
+                0 3px 12px rgba(224,124,90,0.25),
+                0 6px 24px rgba(224,124,90,0.12);
+            margin-bottom: 12px;
+            opacity: 0;
+            animation: fadeSlideUp 1s ease-out 0.3s forwards;
+            line-height: 1.3;
+        }
+
+        .welcome-subtitle {
             font-size: 1.2rem;
-            color: #666;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+            opacity: 0;
+            animation: fadeSlideUp 1s ease-out 0.7s forwards;
+        }
+
+        .start-btn {
+            display: inline-block;
+            padding: 16px 48px;
+            font-size: 1.2rem;
+            font-family: inherit;
+            color: #fff;
+            border: none;
+            border-radius: 40px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ff9a9e, #fecfef, #a18cd1);
+            background-size: 200% 200%;
+            animation:
+                gradientShift 5s ease infinite,
+                breathe 2.5s ease-in-out infinite,
+                fadeSlideUp 1s ease-out 1.1s forwards;
+            box-shadow: 0 6px 24px rgba(255, 154, 158, 0.35);
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            outline: none;
+            opacity: 0;
+            letter-spacing: 1px;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.06);
+            box-shadow: 0 8px 32px rgba(255, 154, 158, 0.5);
+        }
+
+        .start-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); box-shadow: 0 6px 24px rgba(255, 154, 158, 0.35); }
+            50%      { transform: scale(1.04); box-shadow: 0 8px 36px rgba(255, 154, 158, 0.55); }
+        }
+
+        /* ========== 聊天页容器 ========== */
+        .page-chat {
+            padding: 0;
+            justify-content: flex-start;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            width: 100%;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .app-container {
+                height: 92vh;
+                margin-top: 4vh;
+                border-radius: 24px;
+                background: var(--glass-bg);
+                backdrop-filter: blur(18px);
+                -webkit-backdrop-filter: blur(18px);
+                border: 1px solid var(--glass-border);
+                box-shadow: 0 8px 40px var(--shadow-medium);
+                padding: 0;
+                overflow: hidden;
+            }
+        }
+
+        /* ========== 顶部标题栏 ========== */
+        .chat-header {
+            flex-shrink: 0;
+            padding: 18px 20px 14px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .chat-header h1 {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 1.5rem;
+            color: var(--accent);
+            text-shadow: 0 1px 4px rgba(224, 124, 90, 0.2);
+            letter-spacing: 1px;
+        }
+
+        .chat-header .subtitle {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* ========== 聊天消息区域 ========== */
+        .chat-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 16px 8px;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .chat-body::-webkit-scrollbar { width: 5px; }
+        .chat-body::-webkit-scrollbar-track { background: transparent; }
+        .chat-body::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 10px; }
+
+        .message-row {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 14px;
+            gap: 8px;
+            animation: msgSlideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes msgSlideIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-row.bot { flex-direction: row; }
+        .message-row.user { flex-direction: row-reverse; }
+
+        .avatar {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            line-height: 1;
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 2px 8px var(--shadow-soft);
+        }
+
+        .avatar.bot-avatar { background: linear-gradient(135deg, #fbc2eb, #a6c1ee); }
+        .avatar.user-avatar { background: linear-gradient(135deg, #c8ebc9, #a6e6a8); }
+
+        .message-bubble-chat {
+            max-width: 72%;
+            padding: 10px 14px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            word-break: break-word;
+            box-shadow: 0 2px 8px var(--shadow-soft);
+        }
+
+        .message-row.bot .message-bubble-chat {
+            background: var(--msg-bot-bg);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-top-left-radius: 4px;
+            color: var(--text-primary);
+        }
+
+        .message-row.user .message-bubble-chat {
+            background: var(--msg-user-bg);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-top-right-radius: 4px;
+            color: #2e4a30;
+        }
+
+        /* 正在输入指示器 */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 16px;
+        }
+
+        .typing-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            opacity: 0.4;
+            animation: typingBounce 1.2s ease-in-out infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.15s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-6px); opacity: 0.8; }
+        }
+
+        /* ========== 底部输入区域 ========== */
+        .chat-footer {
+            flex-shrink: 0;
+            padding: 12px 16px;
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        @media (min-width: 768px) {
+            .chat-footer { border-radius: 0 0 24px 24px; }
+        }
+
+        .chat-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: var(--input-bg);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-radius: 22px;
+            padding: 11px 18px;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .chat-input::placeholder { color: #bba99a; }
+        .chat-input:focus { box-shadow: inset 0 1px 4px rgba(0,0,0,0.05), 0 0 0 2px rgba(224,124,90,0.25); }
+
+        .send-btn {
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 12px rgba(255, 154, 158, 0.35);
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
             outline: none;
         }
-        
-        .healing-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            background: linear-gradient(135deg, #fed6e3 0%, #a8edea 100%);
-        }
-        
-        .healing-button:active {
-            transform: translateY(1px);
-        }
-        
-        .message-bubble {
+
+        .send-btn:hover { transform: scale(1.08); box-shadow: 0 4px 18px rgba(255, 154, 158, 0.45); }
+        .send-btn:active { transform: scale(0.92); }
+        .send-btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+        /* ========== 治愈气泡动画 ========== */
+        .healing-bubble {
             position: fixed;
             pointer-events: none;
-            z-index: 1000;
-            opacity: 0;
-            font-weight: bold;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            font-weight: 600;
             white-space: nowrap;
-            padding: 5px 15px;
+            padding: 6px 16px;
             border-radius: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            box-shadow: 0 3px 14px rgba(0,0,0,0.07);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.08);
             transform: translate(-50%, 0);
+            will-change: transform, opacity;
         }
-        
-        @keyframes floatUp {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, 0) rotate(0deg);
-            }
-            20% {
-                opacity: 1;
-            }
-            80% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: translate(-50%, -100px) rotate(10deg);
-            }
+
+        @keyframes bubbleFloat {
+            0%   { opacity: 0; transform: translate(-50%, 0) rotate(var(--rot-start)); }
+            12%  { opacity: 1; }
+            80%  { opacity: 0.85; }
+            100% { opacity: 0; transform: translate(calc(-50% + var(--sway-end)), var(--float-y)) rotate(var(--rot-end)); }
         }
-        
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .main-slogan {
-                font-size: 2.2rem;
-            }
-            
-            .healing-button {
-                padding: 12px 20px;
-                font-size: 1rem;
-            }
+
+        @keyframes bubbleSway {
+            0%, 100% { margin-left: 0; }
+            30%  { margin-left: var(--sway-amp); }
+            70%  { margin-left: calc(-1 * var(--sway-amp)); }
         }
-        
+
+        /* ========== 响应式 ========== */
         @media (max-width: 480px) {
-            .main-slogan {
-                font-size: 1.8rem;
-            }
-            
-            .healing-button {
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-            
-            .buttons-container {
-                gap: 10px;
-            }
-            
-            .message-bubble {
-                font-size: 12px !important; /* !important 确保覆盖JavaScript设置的样式 */
-                padding: 3px 10px;
-            }
+            .welcome-title { font-size: 2.2rem; }
+            .welcome-subtitle { font-size: 1rem; margin-bottom: 36px; }
+            .start-btn { padding: 14px 40px; font-size: 1.1rem; }
+            .app-container { padding: 0; }
+            .chat-header h1 { font-size: 1.3rem; }
+            .message-bubble-chat { max-width: 80%; font-size: 0.9rem; padding: 9px 12px; }
+            .avatar { width: 32px; height: 32px; font-size: 1rem; }
+            .chat-input { padding: 10px 14px; font-size: 0.9rem; }
+            .send-btn { width: 40px; height: 40px; }
+        }
+
+        @media (min-width: 481px) and (max-width: 767px) {
+            .app-container { padding: 0; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="main-slogan">祝你天天开心！</h1>
-        <div class="buttons-container">
-            <button class="healing-button">抱抱你</button>
-            <button class="healing-button">一切都会好起来的</button>
-            <button class="healing-button">你已经很棒了</button>
-            <button class="healing-button">今天也很爱你</button>
-            <button class="healing-button">慢慢来，没关系</button>
+    <!-- 背景粒子画布（两页共享） -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- ========== 首页（欢迎页） ========== -->
+    <section class="page page-welcome active" id="page-welcome">
+        <div class="welcome-content">
+            <h1 class="welcome-title">💖 心灵治愈空间</h1>
+            <p class="welcome-subtitle">你愿意和我聊聊吗？</p>
+            <button class="start-btn" id="start-btn">开始聊天</button>
         </div>
-    </div>
-    
+    </section>
+
+    <!-- ========== 聊天页 ========== -->
+    <section class="page page-chat" id="page-chat">
+        <div class="app-container">
+            <div class="chat-header">
+                <h1>心灵治愈空间</h1>
+                <div class="subtitle">和治愈小精灵聊聊吧</div>
+            </div>
+            <div class="chat-body" id="chat-body"></div>
+            <div class="chat-footer">
+                <input type="text" class="chat-input" id="chat-input" placeholder="说点什么吧..." autocomplete="off" maxlength="200">
+                <button class="send-btn" id="send-btn" aria-label="发送消息">
+                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
     <script>
-        // 治愈性文字气泡内容数组
-        const healingMessages = [
-            "世界因你而美好",
-            "慢慢来，没关系",
-            "今天也很爱你",
-            "你是最棒的",
-            "一切都会好起来的",
-            "给自己一个拥抱吧",
-            "你值得被温柔对待",
-            "每一天都是新的开始",
-            "你很重要",
-            "我爱你本来的样子",
-            "困难只是暂时的",
-            "你已经做得很好了",
-            "相信自己",
-            "你的笑容很温暖",
-            "勇敢的你最美丽",
-            "感恩有你",
-            "生活因你而精彩",
-            "坚持就是胜利",
-            "你值得所有美好",
-            "继续前进，未来可期"
+    (function () {
+        'use strict';
+
+        /* ===========================================
+         *  DOM 引用
+         * =========================================== */
+        const welcomePage = document.getElementById('page-welcome');
+        const chatPage    = document.getElementById('page-chat');
+        const startBtn    = document.getElementById('start-btn');
+        const chatBody    = document.getElementById('chat-body');
+        const chatInput   = document.getElementById('chat-input');
+        const sendBtn     = document.getElementById('send-btn');
+
+        /* ===========================================
+         *  精细化情绪分类与回复库
+         * =========================================== */
+
+        /**
+         * 兜底负面关键词（当没有匹配到具体分类时使用）
+         */
+        const negativeKeywords = [
+            '心情不好','难过','压力','焦虑','累','烦','迷茫','失落','伤心',
+            '痛苦','郁闷','疲惫','无助','孤独','不安','紧张','担心','害怕',
+            '糟糕','倒霉','不顺心','崩溃','委屈','抑郁','丧','哭','痛',
+            '苦','愁','烦死','累死','气死','烦死了','好烦','好累','好难',
+            '太难了','撑不住','受不了','不想','放弃','失败','挫败','自卑',
+            '后悔','遗憾','寂寞','空虚','无聊',
+            '不是很好','不太好','不开心','不高兴','心情差','心情糟',
+            '低落','烦躁','很难受','心碎','绝望','很烦','难受',
+            '糟心','闹心','压抑','憋屈','灰心','丧气','消极',
+            '负面','抱怨','失望','冷淡','冷漠','麻木','空虚',
+            '迷茫','困惑','纠结','挣扎','煎熬','折磨','撕裂',
+            '崩溃','瓦解','坍塌','毁灭','灭亡','死亡','自杀',
+            '想死','活不下去','生不如死','度日如年','煎熬',
+            '失眠','睡不着','噩梦','恐惧','恐慌','畏惧',
+            '怯懦','软弱','脆弱','敏感','多疑','猜忌',
+            '嫉妒','恨','厌恶','恶心','反胃','头晕','头痛',
+            '生病','病了','发烧','感冒','咳嗽','疼痛','酸痛',
+            '刺痛','绞痛','剧痛','隐痛','阵痛','慢性','急性',
+            '恶化','加重','复发','后遗症','并发症','绝症',
+            '癌症','肿瘤','手术','住院','打针','吃药','输液',
+            '化疗','放疗','透析','移植','残疾','瘫痪','失明',
+            '失聪','截肢','毁容','畸形','遗传','先天','后天',
+            '意外','事故','灾难','灾祸','浩劫','劫难'
         ];
-        
-        // 颜色数组，用于随机文字颜色
-        const colors = [
-            '#e74c3c', '#3498db', '#2ecc71', '#f1c40f', 
-            '#9b59b6', '#1abc9c', '#e67e22', '#34495e'
+
+        /**
+         * 精细化情绪分类。
+         * 按优先级排列：越具体的分类越靠前，优先匹配。
+         * 每个分类包含：关键词数组、专属回复数组、是否触发气泡。
+         */
+        const replyCategories = [
+            {
+                id: 'tired',
+                keywords: ['累死了','累瘫','精疲力竭','透支','累坏','累趴'],
+                responses: [
+                    '累了吧？先放下手头的事，好好睡一觉，其他的明天再说。',
+                    '你的身体在提醒你需要休息了，听话，去歇一会儿。',
+                    '累了就停下来，世界不会因为你休息一会儿就塌掉的。',
+                    '给自己一杯热茶的时间，什么都不想，只是呼吸。',
+                    '辛苦啦，你已经走了很远的路，值得停下来歇歇脚。'
+                ],
+                triggerBubbles: true
+            },
+            {
+                id: 'tired_general',
+                keywords: ['累','疲惫','疲乏','困倦','困','想睡觉','睡眠不足','好困'],
+                responses: [
+                    '累了就歇一歇，没关系的，你已经足够努力了。',
+                    '去躺一会儿吧，把一切都交给床和枕头。',
+                    '疲惫的时候，允许自己什么都不做，这也是一种勇敢。',
+                    '你不需要一直奔跑，停下来看看风景也很好。',
+                    '休息不是偷懒，是为了更好地出发。'
+                ],
+                triggerBubbles: true
+            },
+            {
+                id: 'stressed',
+                keywords: ['压力大','压力好大','压力大到','喘不过气','快疯了',' deadline','赶不完','做不完','加班','熬夜'],
+                responses: [
+                    '压力大的时候，深呼吸三次，把注意力拉回当下这一刻。',
+                    '你已经很努力了，不需要用完美来苛责自己。',
+                    '事情一件一件做，不用一次性把它们全部扛在肩上。',
+                    '给自己放个五分钟的假，去窗边看看云，再继续。',
+                    '不管结果如何，你全力以赴的样子已经很了不起了。'
+                ],
+                triggerBubbles: true
+            },
+            {
+                id: 'anxious',
+                keywords: ['焦虑','好焦虑','很焦虑','焦虑到','心慌','心神不宁','坐立不安',' panic'],
+                responses: [
+                    '焦虑的时候，试试闭上眼睛，感受空气进入鼻腔的温度。',
+                    '未来还没有来，别让想象出来的困难现在就伤害你。',
+                    '我在这里，陪你一起面对，你不需要独自扛着。',
+                    '把担心的事情写下来，你会发现，它们大多不会发生。',
+                    '你比自己想象的更有力量，过去那么多难关，你都走过来了。'
+                ],
+                triggerBubbles: true
+            },
+            {
+                id: 'sad',
+                keywords: ['难过','伤心','想哭','哭了','泪','流泪','心碎','心痛','悲痛'],
+                responses: [
+                    '想哭就哭吧，眼泪是心里下的一场雨，雨过会天晴的。',
+                    '我在这里陪着你呢，你不是一个人。',
+                    '难过的时候不需要假装坚强，我懂你的不容易。',
+                    '把你的委屈说出来，说出来就会轻一点。',
+                    '没关系，允许自己难过一会儿，这是你最真实的感受。'
+                ],
+                triggerBubbles: true
+            },
+            {
+                id: 'lost',
+                keywords: ['迷茫','不知道怎么办','没方向','找不到','该去哪','人生意义','活着为了什么','看不到未来'],
+                responses: [
+                    '迷茫是因为你在思考，这本身就说明你有一颗向上的心。',
+                    '人生不是非得有一条直线，绕点路也许能看到更美的风景。',
+                    '不用急着找到所有答案，先走好眼前的这一步就好。',
+                    '看不清前方的时候，就低头把脚下的路走好。',
+                    '很多人都有过这样的时刻，慢慢来，方向会一点点浮现的。'
+                ],
+                triggerBubbles: true
+            },
+            {
+                id: 'lonely',
+                keywords: ['孤独','寂寞','没人懂','没人理解','被孤立','被抛弃','一个人扛','没人陪'],
+                responses: [
+                    '你不是一个人，至少现在，我在这里陪着你。',
+                    '孤独只是此刻的感受，不代表你一直会这样。',
+                    '即使身边没有人，你依然值得被温柔以待，包括被自己。',
+                    '有时候孤独是礼物，它让你更清楚地听见自己的声音。',
+                    '让我做你此刻的树洞，把所有的话都倒给我吧。'
+                ],
+                triggerBubbles: true
+            },
+            {
+                id: 'self_doubt',
+                keywords: ['自卑','很差','不够好','没用','废物','失败',' loser','一事无成','配不上','不值得','我不行'],
+                responses: [
+                    '你已经做得很好了，真的，别让那个苛刻的声音骗了你。',
+                    '你的价值不是由成绩、外表或别人的评价决定的。',
+                    '即使是缺点，也是你独一无二的一部分，它们让你成为特别的你。',
+                    '你不需要完美才值得被爱，你本身就足够好了。',
+                    '那些你以为的失败，其实是你正在变好的证明。'
+                ],
+                triggerBubbles: true
+            },
+            {
+                id: 'angry',
+                keywords: ['烦死了','烦透了','生气','愤怒','火大','气炸了','暴怒','讨厌死','恨死'],
+                responses: [
+                    '生气是正常的，这说明你在乎。先把这股火说出来，我听着。',
+                    '深呼吸，吸气四秒，屏息四秒，呼气四秒，再来一次。',
+                    '你的愤怒背后，是受伤或委屈，我懂，你不是无理取闹。',
+                    '找个安全的方式发泄出来，比如对着枕头大喊，或者写下来。',
+                    '别让别人的错误变成你胸口的一块石头，不值得。'
+                ],
+                triggerBubbles: true
+            },
+            {
+                id: 'irritated',
+                keywords: ['烦','烦躁','好烦','烦人','恼火','不爽','郁闷','憋屈','堵得慌'],
+                responses: [
+                    '烦的时候，试试去洗把冷水脸，或者到窗边吹吹风。',
+                    '把烦心的事一件一件列出来，做完一件划掉一件，会好很多。',
+                    '此刻的情绪就像天气，乌云会来，但也一定会散去。',
+                    '给自己买杯喜欢的饮料，小小的甜头也能冲淡烦躁。',
+                    '没什么大不了的，烦完了，日子还是照样过。'
+                ],
+                triggerBubbles: true
+            },
+            {
+                id: 'sick',
+                keywords: ['生病','发烧','感冒','咳嗽','头痛','头晕','肚子痛','胃痛','身体不舒服','浑身疼'],
+                responses: [
+                    '身体不舒服的时候，什么都不如健康重要，好好照顾自己。',
+                    '记得多喝热水，按时吃药，有需要的话去看医生。',
+                    '生病了就不要硬撑，请假休息不丢人，身体是第一位的。',
+                    '希望你快点好起来，到时候我们一起去晒晒太阳。',
+                    '病痛是暂时的，好好休养，你的免疫系统正在努力战斗呢。'
+                ],
+                triggerBubbles: true
+            },
+            {
+                id: 'insomnia',
+                keywords: ['失眠','睡不着','失眠了','辗转反侧','半夜醒','早醒','多梦','噩梦'],
+                responses: [
+                    '睡不着的时候，试试听听白噪音或轻音乐，让大脑慢慢静下来。',
+                    '别强迫自己入睡，越着急反而越清醒，放松就好。',
+                    '闭上眼睛，从脚趾开始，一个一个部位地放松，慢慢就睡着了。',
+                    '明天的事明天再想，现在最重要的是让身体休息。',
+                    '如果一直睡不着，可以起来看几页书，困意会悄悄回来的。'
+                ],
+                triggerBubbles: true
+            },
+            {
+                id: 'gratitude',
+                keywords: ['谢谢','感谢','谢谢你','谢了','多亏有你','多亏你','感激'],
+                responses: [
+                    '不客气呀，能陪你聊天我也很开心～',
+                    '这是我愿意做的，你的信任对我来说就是最大的感谢。',
+                    '看到你心情好一点，就是我最大的回报啦。',
+                    '不用谢，以后 anytime 都可以来找我。',
+                    '嘻嘻，被夸奖了好开心，你也要对自己好一点哦。'
+                ],
+                triggerBubbles: false
+            },
+            {
+                id: 'greeting',
+                keywords: ['你好','嗨','hello','hi','在吗','在不在','有人吗'],
+                responses: [
+                    '嗨～ 我在这里呢，想聊点什么？',
+                    '你好呀，很高兴见到你，最近怎么样？',
+                    '在的！有什么想说的都可以告诉我哦。',
+                    '嗨，今天过得还好吗？我随时都在。',
+                    '你好～ 愿意和我分享你此刻的心情吗？'
+                ],
+                triggerBubbles: false
+            },
+            {
+                id: 'happy',
+                keywords: ['开心','高兴','快乐','幸福','棒极了','太好了','美滋滋','爽','赞','棒'],
+                responses: [
+                    '太好啦！看到你开心，我也忍不住想笑～',
+                    '你的快乐是有感染力的呢，继续保持！',
+                    '真好！把好情绪存进记忆银行，难过的时候可以取出来用。',
+                    '太棒了，今天又是被你的笑容点亮的一天！',
+                    '好心情要一直保持下去哦，你值得所有美好！'
+                ],
+                triggerBubbles: false
+            },
+            {
+                id: 'miss_someone',
+                keywords: ['想你了','想你','想念','怀念','惦记','牵挂'],
+                responses: [
+                    '我也在想和你聊天呢，真好，我们又见面了。',
+                    '想念是一种很温柔的情绪，说明你心里有爱。',
+                    '把想念告诉那个人吧，别让它只藏在心里。',
+                    '思念虽然有点酸酸的，但也是爱存在的证明呀。',
+                    '我也在哦，任何时候想找人说话，我都在这里。'
+                ],
+                triggerBubbles: false
+            }
         ];
-        
-        // 获取所有按钮元素
-        const buttons = document.querySelectorAll('.healing-button');
-        
-        // 为每个按钮添加点击事件
-        buttons.forEach(button => {
-            button.addEventListener('click', () => {
-                // 每次点击生成5-10个文字气泡
-                const bubbleCount = Math.floor(Math.random() * 6) + 5;
-                for (let i = 0; i < bubbleCount; i++) {
-                    createBubble();
-                }
-            });
+
+        /**
+         * 通用安慰话语（兜底使用）
+         */
+        const comfortMessages = [
+            '我在这里陪着你呢，你不是一个人。',
+            '辛苦啦，给自己一个抱抱吧。',
+            '难过是暂时的，你比想象中更坚强。',
+            '累了就歇一歇，没关系的。',
+            '你已经做得很好了，真的。',
+            '每一次低谷，都是为了下一次起飞。',
+            '你值得所有的温柔和美好。',
+            '慢慢来，我陪你。',
+            '今天也很爱你，要记得哦。',
+            '你的感受很重要，我听到了。',
+            '没关系的，允许自己难过一会儿。',
+            '你不需要总是那么坚强。',
+            '你值得被这个世界温柔以待。',
+            '明天又是崭新的一天，一切都会好的。',
+            '不管发生什么，我都站在你这边。'
+        ];
+
+        /**
+         * 通用积极话语（兜底使用）
+         */
+        const positiveMessages = [
+            '真好！看到你状态不错，我也很开心～',
+            '你的快乐是有感染力的呢！',
+            '继续保持这份好心情哦～',
+            '听到你这么说，我觉得世界都亮了！',
+            '你开心就是我最大的快乐～',
+            '太棒了，今天又是美好的一天！',
+            '你的笑容一定很好看吧～',
+            '看到你一切都好，我也就放心啦。',
+            '好心情要一直保持下去哦！',
+            '你就像阳光一样温暖呢～'
+        ];
+
+        /* ===========================================
+         *  治愈气泡资源
+         * =========================================== */
+        const bubbleTexts = [
+            '世界因你而美好','慢慢来，没关系','今天也很爱你',
+            '你是最棒的','一切都会好起来的','给自己一个拥抱吧',
+            '你值得被温柔对待','每一天都是新的开始','你很重要',
+            '我爱你本来的样子','困难只是暂时的','你已经做得很好了',
+            '相信自己','你的笑容很温暖','勇敢的你最美丽',
+            '感恩有你','生活因你而精彩','坚持就是胜利',
+            '你值得所有美好','继续前进，未来可期','你就是自己的光',
+            '累了就歇歇，天不会塌','你的努力终将被看见','别怕，有我在',
+            '你的存在本身就是礼物','允许自己不完美',
+            '阳光正在赶来的路上','你比你想象的更强大',
+            '今天辛苦啦，早点休息','每一次呼吸都是奇迹',
+            '世界很大，慢慢去看','你的温柔会被珍惜的',
+            '做你自己，其他人都有人做了','正在变得更好的路上',
+            '你的眼睛里藏着星星'
+        ];
+
+        const bubbleColors = [
+            '#e74c6f','#f0879e','#d66ba0',
+            '#7c6dd8','#9b8ec4','#a78bfa',
+            '#5ba4cf','#6ec6e6','#89cff0',
+            '#e09b5f','#e8b87a','#f0c78e',
+            '#6dbd8a','#8fd4a5','#a8e0be'
+        ];
+
+        /* ===========================================
+         *  页面切换逻辑（淡入淡出过渡）
+         * =========================================== */
+        startBtn.addEventListener('click', () => {
+            welcomePage.classList.remove('active');
+            chatPage.classList.add('active');
+            chatInput.focus();
+
+            // 首次进入聊天页时发送欢迎消息
+            if (!chatPage.dataset.initialized) {
+                chatPage.dataset.initialized = 'true';
+                setTimeout(() => {
+                    addMessage('bot', '嗨～ 最近过得怎么样？可以和我聊聊吗？');
+                }, 500);
+            }
         });
-        
-        // 创建文字气泡函数
-        function createBubble() {
-            // 创建气泡元素
-            const bubble = document.createElement('div');
-            bubble.className = 'message-bubble';
-            
-            // 随机选择一条治愈性文字
-            const randomMessage = healingMessages[Math.floor(Math.random() * healingMessages.length)];
-            bubble.textContent = randomMessage;
-            
-            // 随机位置
-            const randomX = Math.random() * 100;
-            const randomY = Math.random() * 100;
-            bubble.style.left = `${randomX}%`;
-            bubble.style.top = `${randomY}%`;
-            
-            // 随机颜色
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            bubble.style.color = randomColor;
-            
-            // 随机大小
-            const randomSize = Math.floor(Math.random() * 20) + 14;
-            bubble.style.fontSize = `${randomSize}px`;
-            
-            // 随机动画持续时间
-            const randomDuration = Math.random() * 3 + 2;
-            bubble.style.animation = `floatUp ${randomDuration}s ease-in-out forwards`;
-            
-            // 添加到页面
-            document.body.appendChild(bubble);
-            
-            // 动画结束后移除元素
-            setTimeout(() => {
-                bubble.remove();
-            }, randomDuration * 1000);
+
+        /* ===========================================
+         *  聊天核心逻辑
+         * =========================================== */
+
+        /**
+         * 根据用户输入检测最匹配的情绪类别。
+         * 按 replyCategories 数组顺序优先匹配，越具体的分类越靠前。
+         * @param {string} text - 用户输入文本
+         * @returns {{responses: string[], triggerBubbles: boolean}} - 匹配的回复库与气泡触发标志
+         */
+        function detectCategory(text) {
+            const lower = text.toLowerCase();
+            // 优先匹配精细化分类
+            for (const cat of replyCategories) {
+                if (cat.keywords.some(kw => lower.includes(kw))) {
+                    return { responses: cat.responses, triggerBubbles: cat.triggerBubbles };
+                }
+            }
+            // 兜底：检查是否包含任何负面关键词
+            if (negativeKeywords.some(kw => lower.includes(kw))) {
+                return { responses: comfortMessages, triggerBubbles: true };
+            }
+            // 默认积极/中性回复
+            return { responses: positiveMessages, triggerBubbles: false };
         }
+
+        function addMessage(role, content, isHtml = false) {
+            const row = document.createElement('div');
+            row.className = `message-row ${role}`;
+
+            const avatar = document.createElement('div');
+            avatar.className = `avatar ${role === 'bot' ? 'bot-avatar' : 'user-avatar'}`;
+            avatar.textContent = role === 'bot' ? '🌱' : '👤';
+            row.appendChild(avatar);
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble-chat';
+            if (isHtml) bubble.innerHTML = content;
+            else bubble.textContent = content;
+            row.appendChild(bubble);
+
+            chatBody.appendChild(row);
+            scrollToBottom();
+        }
+
+        function showTyping() {
+            const row = document.createElement('div');
+            row.className = 'message-row bot';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar bot-avatar';
+            avatar.textContent = '🌱';
+            row.appendChild(avatar);
+
+            const bubble = document.createElement('div');
+            bubble.className = 'message-bubble-chat';
+            bubble.innerHTML = `
+                <div class="typing-indicator">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                </div>`;
+            row.appendChild(bubble);
+            chatBody.appendChild(row);
+            scrollToBottom();
+
+            return {
+                row,
+                remove() { if (row.parentNode) row.remove(); }
+            };
+        }
+
+        function scrollToBottom() {
+            requestAnimationFrame(() => {
+                chatBody.scrollTop = chatBody.scrollHeight;
+            });
+        }
+
+        function handleSend() {
+            const text = chatInput.value.trim();
+            if (!text) {
+                const typing = showTyping();
+                setTimeout(() => {
+                    typing.remove();
+                    addMessage('bot', '说点什么吧，我在这里听着呢～');
+                }, 600);
+                return;
+            }
+
+            addMessage('user', text);
+            chatInput.value = '';
+
+            const typing = showTyping();
+            const category = detectCategory(text);
+            const delay = 800 + Math.random() * 600;
+
+            setTimeout(() => {
+                typing.remove();
+                const reply = category.responses[Math.floor(Math.random() * category.responses.length)];
+                addMessage('bot', reply);
+                if (category.triggerBubbles) {
+                    setTimeout(() => triggerHealingBubbles(), 300);
+                }
+            }, delay);
+        }
+
+        sendBtn.addEventListener('click', handleSend);
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.isComposing) {
+                e.preventDefault();
+                handleSend();
+            }
+        });
+        chatInput.addEventListener('focus', scrollToBottom);
+
+        /* ===========================================
+         *  治愈气泡动画系统
+         * =========================================== */
+        function triggerHealingBubbles() {
+            const count = Math.floor(Math.random() * 11) + 15;
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => createHealingBubble(), i * 100);
+            }
+        }
+
+        function createHealingBubble() {
+            const el = document.createElement('div');
+            el.className = 'healing-bubble';
+            el.textContent = bubbleTexts[Math.floor(Math.random() * bubbleTexts.length)];
+
+            const x = Math.random() * 90 + 5;
+            const y = Math.random() * 30 + 60;
+            el.style.left = x + '%';
+            el.style.top  = y + '%';
+            el.style.color = bubbleColors[Math.floor(Math.random() * bubbleColors.length)];
+
+            const size = Math.floor(Math.random() * 24) + 16;
+            el.style.fontSize = size + 'px';
+
+            const rotStart = (Math.random() * 30 - 15).toFixed(1);
+            const rotEnd   = (Math.random() * 30 - 15).toFixed(1);
+            el.style.setProperty('--rot-start', rotStart + 'deg');
+            el.style.setProperty('--rot-end',   rotEnd + 'deg');
+
+            const floatY = -(Math.random() * 280 + 150);
+            el.style.setProperty('--float-y', floatY + 'px');
+
+            const swayEnd = (Math.random() * 100 - 50).toFixed(0);
+            const swayAmp = (Math.random() * 25 + 8).toFixed(0);
+            el.style.setProperty('--sway-end', swayEnd + 'px');
+            el.style.setProperty('--sway-amp',  swayAmp + 'px');
+
+            const dur = (Math.random() * 2 + 2.5).toFixed(2);
+            el.style.animation = `bubbleFloat ${dur}s ease-out forwards, bubbleSway ${dur}s ease-in-out`;
+
+            document.body.appendChild(el);
+            setTimeout(() => { if (el.parentNode) el.remove(); }, parseFloat(dur) * 1000 + 150);
+        }
+
+        /* ===========================================
+         *  背景微光粒子系统（Canvas）
+         * =========================================== */
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let rafId = null;
+
+        const particleColors = [
+            'rgba(255, 182, 193, 0.3)',
+            'rgba(173, 216, 230, 0.25)',
+            'rgba(200, 180, 230, 0.25)',
+            'rgba(255, 218, 185, 0.2)',
+            'rgba(180, 230, 210, 0.2)',
+            'rgba(230, 190, 220, 0.25)'
+        ];
+
+        function resizeCanvas() {
+            canvas.width  = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function makeParticle() {
+            return {
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.max(1.5, Math.random() * 3.5 + 1),
+                color: particleColors[Math.floor(Math.random() * particleColors.length)],
+                vy: (Math.random() - 0.55) * 0.25,
+                vx: (Math.random() - 0.5) * 0.12,
+                alphaBase: Math.random() * 0.4 + 0.15,
+                alphaSpeed: Math.random() * 0.006 + 0.002,
+                phase: Math.random() * Math.PI * 2
+            };
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.min(45, Math.floor((canvas.width * canvas.height) / 28000));
+            for (let i = 0; i < count; i++) particles.push(makeParticle());
+        }
+
+        function drawFrame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (const p of particles) {
+                p.y += p.vy; p.x += p.vx; p.phase += p.alphaSpeed;
+                if (p.y < -10) p.y = canvas.height + 10;
+                if (p.y > canvas.height + 10) p.y = -10;
+                if (p.x < -10) p.x = canvas.width + 10;
+                if (p.x > canvas.width + 10) p.x = -10;
+
+                const a = Math.max(0.04, Math.min(0.55, p.alphaBase + Math.sin(p.phase) * 0.12));
+
+                ctx.globalAlpha = a;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, Math.max(0.5, p.r), 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+
+                const glowR = Math.max(1, p.r * 2.8);
+                const glow = ctx.createRadialGradient(
+                    p.x, p.y, Math.max(0.5, p.r * 0.4),
+                    p.x, p.y, glowR
+                );
+                glow.addColorStop(0, p.color);
+                glow.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx.globalAlpha = a * 0.45;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, glowR, 0, Math.PI * 2);
+                ctx.fillStyle = glow;
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+            rafId = requestAnimationFrame(drawFrame);
+        }
+
+        window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+        window.addEventListener('beforeunload', () => { if (rafId) cancelAnimationFrame(rafId); });
+
+        resizeCanvas();
+        initParticles();
+        drawFrame();
+
+    })();
     </script>
 </body>
 </html>

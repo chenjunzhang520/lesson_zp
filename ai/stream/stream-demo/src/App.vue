@@ -89,6 +89,7 @@
         // 不要覆盖 done 读取完成的状态
         // 读取到的是二进制流 unit8Array 十进制数
         const {value, done: doneReading} = await reader.read()
+        
       }
     } else {
       // 非流式输出
