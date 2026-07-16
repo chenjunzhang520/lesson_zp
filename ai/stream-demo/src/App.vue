@@ -64,8 +64,7 @@ const update = async () => {
 
       const lines = chunkValue.split('\n')
         .filter((line) => line.startWith('data: '))
-
-      
+        
     }
 
   } else {
