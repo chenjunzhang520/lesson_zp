@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>诚诚AI日报 - 2026年07月17日</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --accent: #6366f1;
+            --accent-light: #eef2ff;
+            --tag-bg: #f1f5f9;
+            --tag-text: #475569;
+            --tag-hover: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+            --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+            --radius: 12px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f172a;
+                --card-bg: #1e293b;
+                --text: #f1f5f9;
+                --text-secondary: #94a3b8;
+                --border: #334155;
+                --accent: #818cf8;
+                --accent-light: #1e1b4b;
+                --tag-bg: #334155;
+                --tag-text: #cbd5e1;
+                --tag-hover: #475569;
+                --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3);
+                --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.4);
+            }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 24px 20px 60px;
+        }
+
+        /* ---------- Header ---------- */
+        .header {
+            text-align: center;
+            padding: 40px 20px 32px;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), #a78bfa);
+            border-radius: 2px;
+        }
+
+        .header .logo {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--accent), #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .date {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        /* ---------- Stats Bar ---------- */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 32px;
+            padding: 16px 24px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item .number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-item .label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        /* ---------- Section Heading ---------- */
+        .section-heading {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            padding-left: 12px;
+            border-left: 3px solid var(--accent);
+            letter-spacing: 1px;
+        }
+
+        /* ---------- News Cards ---------- */
+        .news-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .news-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .news-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        .news-card .source-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: var(--accent);
+            background: var(--accent-light);
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .news-card h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        .news-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 14px;
+        }
+
+        .news-card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .news-card .tag {
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 100px;
+            background: var(--tag-bg);
+            color: var(--tag-text);
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+
+        .news-card .tag:hover {
+            background: var(--tag-hover);
+        }
+
+        .news-card .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .news-card .read-more {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        /* ---------- Hot Tag ---------- */
+        .tag.hot {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+        @media (prefers-color-scheme: dark) {
+            .tag.hot {
+                background: #450a0a;
+                color: #fca5a5;
+            }
+        }
+
+        /* ---------- Footer ---------- */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 640px) {
+            .container { padding: 16px 12px 40px; }
+            .header h1 { font-size: 22px; }
+            .news-card { padding: 16px; }
+            .stats-bar { gap: 20px; padding: 12px 16px; }
+        }
+
+        /* ---------- Print ---------- */
+        @media print {
+            body { background: white; }
+            .news-card { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">CHENG AI · DAILY</div>
+            <h1>诚诚AI日报</h1>
+            <div class="date">2026年07月17日 星期五</div>
+        </header>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="number" id="newsCount">0</div>
+                <div class="label">精选资讯</div>
+            </div>
+            <div class="stat-item">
+                <div class="number" id="sourceCount">0</div>
+                <div class="label">信息来源</div>
+            </div>
+            <div class="stat-item">
+                <div class="number" id="tagCount">0</div>
+                <div class="label">覆盖标签</div>
+            </div>
+        </div>
+
+        <!-- Section: 头条 -->
+        <div class="section-heading">🔥 今日头条</div>
+        <div class="news-grid" id="headlines"></div>
+
+        <!-- Section: 模型与产品 -->
+        <div class="section-heading">🧠 模型与产品</div>
+        <div class="news-grid" id="models"></div>
+
+        <!-- Section: 商业与融资 -->
+        <div class="section-heading">💰 商业与融资</div>
+        <div class="news-grid" id="business"></div>
+
+        <!-- Section: 行业趋势与治理 -->
+        <div class="section-heading">🌐 行业趋势与治理</div>
+        <div class="news-grid" id="trends"></div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>📡 数据来源：TechCrunch · The Verge · Hacker News · Reddit · VentureBeat · Engadget 等</p>
+            <p>⏰ 更新时间：2026年07月17日 12:00 · 由诚诚AI自动生成</p>
+            <p style="margin-top:8px;font-size:11px;">资讯内容仅供参考，原文观点不代表本站立场</p>
+        </footer>
+    </div>
+
+    <script>
+    (function() {
+        // ============ DATA ============
+        const headlines = [
+            {
+                "title": "WAIC 2026上海开幕：习近平宣布成立世界人工智能合作组织，29国签署协议",
+                "summary": "2026世界人工智能大会今日在上海开幕，习近平发表主旨演讲，强调AI不应由一国主导，宣布成立总部设在上海的WAICO。中国将在未来五年为发展中国家提供5000个AI培训名额，并与东盟、非盟、金砖等建立国际AI合作中心。大会展览面积超10万平米，1100余家企业参展，300余款产品全球首发。",
+                "source": "新华社",
+                "url": "https://english.news.cn/20260717/893fe11097db460ea31b98f131e34ef0/c.html",
+                "time": "数小时前",
+                "tags": ["政策/监管", "中国市场", "大模型"]
+            },
+            {
+                "title": "月之暗面发布 Kimi K3：全球最大开源模型，2.8万亿参数对标GPT-5",
+                "summary": "北京月之暗面(Moonshot AI)发布Kimi K3，以2.8万亿参数成为全球最大开源AI模型，比DeepSeek V4 Pro大约75%。支持100万token上下文窗口、原生视觉理解和「常开思考模式」，性能接近Anthropic和OpenAI的顶级闭源系统。完整权重将于7月27日开放，API定价$3/$15每百万token。",
+                "source": "VentureBeat",
+                "url": "https://venturebeat.com/technology/chinas-moonshot-ai-releases-kimi-k3-the-largest-open-source-model-ever-rivaling-top-u-s-systems",
+                "time": "数小时前",
+                "tags": ["大模型", "开源", "中国市场", "基准测试"]
+            }
+        ];
+
+        const models = [
+            {
+                "title": "OpenAI GPT-5.6 正式上线：三档模型(Sol/Terra/Luna)，Sol编程能力超越Mythos 5",
+                "summary": "OpenAI于7月9日全球发布GPT-5.6系列。旗舰版Sol专攻复杂编程与科学任务($5/$30 per 1M token)；中端Terra价格仅为GPT-5.5一半($2.50/$15)；轻量版Luna主打快速低价($1/$6)。新增Max深度推理模式和Ultra多子代理协调模式(最多16个)。同步推出ChatGPT Work自主任务执行工具。",
+                "source": "Engadget",
+                "url": "https://www.engadget.com/2210308/openai-rolls-out-gpt5-6-july-9/",
+                "time": "8天前",
+                "tags": ["大模型", "闭源", "产品发布", "Agent"]
+            },
+            {
+                "title": "OpenAI 发布 GPT-Live：全双工语音模型，可同时听与说",
+                "summary": "OpenAI推出GPT-Live语音模型系列，具备全双工能力，可边听边说，支持实时打断和自然对话。内置实时翻译、唤醒词「Hey Chat」激活，复杂查询可后台委托GPT-5.5处理。提供GPT-Live-1（付费）和GPT-Live-1 mini（免费）两个版本，标志着AI语音交互进入新阶段。",
+                "source": "The Next Web",
+                "url": "https://thenextweb.com/news/openai-gpt-live-chatgpt-voice-full-duplex",
+                "time": "9天前",
+                "tags": ["多模态", "产品发布", "API"]
+            },
+            {
+                "title": "Apple Intelligence 获中国监管批准，与阿里通义千问、百度合作落地",
+                "summary": "Apple于7月16日获得中国监管部门批准，可在国内推出Apple Intelligence服务。Apple选择与阿里巴巴（通义千问大模型用于内容审核与过滤）和百度（搜索集成）合作。此举对Apple至关重要——其中国区收入达205亿美元(同比增长28%)，在竞争激烈的中国智能手机市场，AI功能或成为提振销量的关键。",
+                "source": "TechCrunch",
+                "url": "https://techcrunch.com/2026/07/15/apple-intelligence-approved-for-launch-in-china-with-alibabas-qwen-ai/",
+                "time": "1天前",
+                "tags": ["大模型", "中国市场", "产品发布", "应用/工具"]
+            },
+            {
+                "title": "Apple iOS 27公测版发布：Siri全面AI重塑，由Gemini蒸馏模型驱动",
+                "summary": "Apple发布iOS 27公测版，Siri经历史上最大重构——全新独立App、深度融合操作系统、基于Google Gemini蒸馏的自研模型驱动。新Siri具备更强的上下文理解和跨应用操作能力，标志着Apple正式加入AI助手大战。",
+                "source": "TechCrunch",
+                "url": "https://techcrunch.com/2026/07/14/apple-opens-its-new-siri-ai-to-everyone-with-the-ios-27-public-beta/",
+                "time": "3天前",
+                "tags": ["产品发布", "Agent", "多模态"]
+            }
+        ];
+
+        const business = [
+            {
+                "title": "Fireworks AI 完成15.1亿美元D轮融资，估值175亿美元",
+                "summary": "Nvidia支持的AI基础设施公司Fireworks AI获15.1亿美元融资，估值从去年10月的40亿飙升至175亿。由Atreides Management、Index Ventures、TCV领投，Nvidia等跟投。公司由前Meta PyTorch负责人林俏创立，年化收入超10亿美元(同比增长5倍)，每日处理40万亿+token，客户包括Uber、Shopify、Revolut。",
+                "source": "Yahoo Finance",
+                "url": "https://finance.yahoo.com/technology/ai/articles/nvidia-backed-startup-fireworks-valued-145247058.html",
+                "time": "1天前",
+                "tags": ["融资", "GPU/算力", "应用/工具"]
+            },
+            {
+                "title": "Anthropic与黑石集团联合成立Ode：15亿美元押注AI企业实施",
+                "summary": "Anthropic与全球最大另类资管公司黑石(Blackstone)共同推出AI实施合资企业Ode，规模15亿美元。Ode定位「Claude优先」但可灵活使用其他模型，专注于帮助企业真正用上AI。与此同时，OpenAI也推出了类似项目The Deployment Company。AI战场正从「造模型」转向「用模型」。",
+                "source": "TechCrunch",
+                "url": "https://techcrunch.com/2026/07/15/anthropic-blackstone-bet-the-next-trillion-dollar-ai-business-is-implementation-not-models/",
+                "time": "2天前",
+                "tags": ["融资", "应用/工具", "Agent"]
+            },
+            {
+                "title": "Reflection AI 与 Nebius 签署超10亿美元计算协议",
+                "summary": "由两位前Google DeepMind研究员创立的AI公司Reflection AI与Nebius签署超过10亿美元的计算合作协议，锁定Nvidia最新GPU芯片。Reflection此前已于6月与SpaceX达成约1.5亿美元/月的计算合同(至2029年)。公司致力于开发开源AI模型，对标OpenAI和Anthropic。",
+                "source": "Yahoo Finance",
+                "url": "https://ca.finance.yahoo.com/news/ai-startup-reflection-signs-over-110942699.html",
+                "time": "3天前",
+                "tags": ["融资", "GPU/算力", "开源"]
+            },
+            {
+                "title": "微软培训销售团队贬低OpenAI和Anthropic，力推自研模型",
+                "summary": "TechCrunch报道，微软正在系统性培训其销售人员，在与客户沟通时有针对性地贬低OpenAI和Anthropic的产品，转而推销微软自研的「端到端系统」。今年4月微软已重新谈判与OpenAI的合作协议，取消排他条款，并逐步将第三方模型从Office应用中移除以降低成本。",
+                "source": "TechCrunch",
+                "url": "https://techcrunch.com/2026/07/15/microsoft-is-reportedly-training-salespeople-to-talk-down-openai-and-anthropic/",
+                "time": "2天前",
+                "tags": ["融资", "应用/工具", "大模型"]
+            }
+        ];
+
+        const trends = [
+            {
+                "title": "中国开源模型在HuggingFace下载量首次超越美国，占比41%",
+                "summary": "2026年春季，中国开源模型在HuggingFace上的下载占比达到41%，首次超越美国模型。在OpenRouter上，最受欢迎的6个模型全部来自中国公司（腾讯、小米、DeepSeek、MiniMax等），Anthropic Claude Opus 4.7仅排第7。HuggingFace CEO警告AI最大风险是「权力集中」，而非开源。",
+                "source": "TechCrunch",
+                "url": "https://techcrunch.com/2026/07/14/the-real-ai-race-may-no-longer-be-at-the-frontier-open-models-hugging-face/",
+                "time": "3天前",
+                "tags": ["开源", "中国市场", "大模型"]
+            },
+            {
+                "title": "谷歌CEO披露：75%新代码由AI生成，I/O 2026提及「AI」约190次",
+                "summary": "Google CEO桑达尔·皮查伊在I/O 2026上透露，75%的Google新代码已由AI生成。整场Keynote中「AI」和「Gemini」被提及约190次，展现了Google将AI深度融入全线产品的战略。其他亮点包括Google Photos数字衣橱功能、Gemini聊天通过Drive分享等。",
+                "source": "The Verge",
+                "url": "https://www.theverge.com/archives/ai-artificial-intelligence/2026/1/7",
+                "time": "近期",
+                "tags": ["代码生成", "应用/工具", "产品发布"]
+            },
+            {
+                "title": "Claude Code隐写标记事件：Hacker News年度最大AI争议",
+                "summary": "安全研究者发现Claude Code在系统提示中嵌入隐藏Unicode隐写标记，可检测时区和API网关来指纹识别用户。该话题在Hacker News上获得1402分、399条评论。部分人辩护其为反蒸馏自卫机制，但大多数人认为这是对拥有文件系统和Shell权限工具的信任背离。事件引发对AI编程工具透明度的广泛讨论。",
+                "source": "Hacker News",
+                "url": "https://www.bestblogs.dev/article/19a577dc",
+                "time": "近期",
+                "tags": ["安全/AI安全", "代码生成", "大模型"]
+            },
+            {
+                "title": "ICML 2026接收提示词工程论文，学界社区激烈争论",
+                "summary": "Northeastern University和Stanford Manning Lab联合研究的「Verbalized Sampling」方法——仅通过修改提示词提升LLM输出多样性、无需算法或训练——被顶级会议ICML 2026接收，在Reddit引爆争论。批评者认为这不是「真正的ML研究」；支持者指出其揭示了人类偏好数据中的Typicality Bias，并引用Chain-of-Thought作为推理时技术合法性的先例。",
+                "source": "Reddit / 36氪",
+                "url": "https://eu.36kr.com/en/p/3896547651110534",
+                "time": "近期",
+                "tags": ["学术/论文", "大模型"]
+            },
+            {
+                "title": "AI致大规模裁员：2026年已87,714个岗位被归因于AI",
+                "summary": "TechCrunch报道，2026年以来美国雇主将87,714个裁员归因于AI(占全部裁员的22%)。受影响企业包括Block(~4000人)、Meta(~8000人)、Cloudflare(~1100人)。OpenAI CEO Sam Altman公开指责大公司以AI为借口裁员，Marc Andreessen则称AI是掩盖疫情期间过度招聘的「万能借口」。",
+                "source": "TechCrunch",
+                "url": "https://forklog.com/en/techcrunch-ai-used-as-justification-for-layoffs/",
+                "time": "近期",
+                "tags": ["应用/工具", "AI人才"]
+            }
+        ];
+
+        // ============ RENDER ============
+        const allNews = [...headlines, ...models, ...business, ...trends];
+        const allSections = [
+            { id: 'headlines', data: headlines },
+            { id: 'models', data: models },
+            { id: 'business', data: business },
+            { id: 'trends', data: trends }
+        ];
+
+        allSections.forEach(section => {
+            const grid = document.getElementById(section.id);
+            section.data.forEach(item => {
+                const card = document.createElement('a');
+                card.className = 'news-card';
+                card.href = item.url;
+                card.target = '_blank';
+                card.rel = 'noopener noreferrer';
+                card.innerHTML = `
+                    <span class="source-badge">${escapeHtml(item.source)}</span>
+                    <h3>${escapeHtml(item.title)}</h3>
+                    <p>${escapeHtml(item.summary)}</p>
+                    <div class="tags">
+                        ${item.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}
+                    </div>
+                    <div class="card-footer">
+                        <span>${escapeHtml(item.time)}</span>
+                        <span class="read-more">阅读原文 →</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        });
+
+        // Stats
+        const uniqueSources = new Set(allNews.map(n => n.source));
+        const uniqueTags = new Set(allNews.flatMap(n => n.tags));
+        document.getElementById('newsCount').textContent = allNews.length;
+        document.getElementById('sourceCount').textContent = uniqueSources.size;
+        document.getElementById('tagCount').textContent = uniqueTags.size;
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+    })();
+    </script>
+</body>
+</html>

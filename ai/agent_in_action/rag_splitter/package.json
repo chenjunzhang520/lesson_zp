@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@langchain/classic": "^1.0.40",
     "@langchain/community": "^1.1.29",
+    "@langchain/openai": "^1.5.5",
     "@langchain/textsplitters": "^1.0.1",
     "axios": "^1.18.1",
     "cheerio": "^1.2.0",
