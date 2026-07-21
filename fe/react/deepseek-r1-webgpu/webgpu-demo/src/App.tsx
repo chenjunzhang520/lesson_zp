@@ -6,6 +6,7 @@
     useState, // react 函数式思想 hooks ，以 use 开头
     useEffect  // 生命周期钩子函数 组件挂载时执行
   } from 'react';
+  import Progress from './components/Progress';
   function App() {
     // use 用， status状态 hooks函数 
     // 数据状态驱动界面状态，设计
@@ -14,30 +15,36 @@
     // null 初始值，loading 加载中 ready llm准备好了
     const [status, setStatus] = useState<string | null>(null); // 响应式数据状态
     // 错误对象数据状态
-    // const [error, setError] = useState(null);
-    const [error, setError] = useState('出错了'); 
+    const [error, setError] = useState(null);
+    // const [error, setError] = useState('出错了'); 
     // 加载信息
-    const [loadingMessage, setLoadingMessage] = useState("");
+    // const [loadingMessage, setLoadingMessage] = useState("");
+    const [loadingMessage, setLoadingMessage] = useState("开始加载");
     const [progressItems, setProgressItems] = useState([{
-      file: 'model.onnx',
-      progress: 0,
+      text: 'model.onnx',
+      percentage: 0,
       total: 10000000
-    }]);
+    },{
+      text: 'model2.onnx',
+      percentage: 10,
+      total: 10001000
+    }
+  ]);
     // 浏览器 导航栏 是否支持 WebGPU
     // 现代浏览器的重要特性
     // ! 取反 navigator.gpu 不支持的时候 undefined
     // !! 再取反，一定可以转成true | false
     // 双重否定等于肯定
-    const IS_WEBGPU_AVALABLE = !!navigator.gpu;
+    const IS_WEBGPU_AVAILABLE = !!navigator.gpu;
 
     // 组件生命周期，副作用
     // 组件挂载后，附带做什么
     useEffect(() => {
       console.log('组件已经挂载完成');
 
-      setTimeout(() => {
-        setStatus('ready');
-      }, 2000);
+      // setTimeout(() => {
+      //   setStatus('ready');
+      // }, 2000);
     }, [])
 
     console.log('组件函数执行');
@@ -54,7 +61,7 @@
       // </div>
       // flex-direction: column; 主轴 100vh margin x 水平居中对齐
       // 原子类，组合一下 flex-start flex-end 
-      IS_WEBGPU_AVALABLE?(<div className="flex flex-col h-screen mx-auto items-center justify-end text-gray-800 bg-white ">
+      IS_WEBGPU_AVAILABLE?(<div className="flex flex-col h-screen mx-auto items-center justify-end text-gray-800 bg-white ">
         <div className="h-full overflow-auto flex justify-center items-center flex-col relative">
           {/* 1 rem = 4  1 单位  4px  
               [] 代表 指定样式大小
@@ -111,8 +118,40 @@
                 </div>
               )
             }
+            {/* 
+            vue 添加事件 @click 
+            react 添加事件 onClick 不要去另外发明 
+            HuggingFace 社区下载 开源模型 model-id  */}
+            <button 
+            className="border px-4 py-2 rounded-lg bg-blue-400 text-white hover:bg-blue-500 disabled:cursor-not-allowed select-none"
+            disabled={status !== null || error !== null}
+            onClick={() => {
+              setStatus("loading");
+            }}>Load Model</button>
           </div>
         </div>
+        {   
+          // loading 状态 llm 下载 文件数组 驱动下载进度条
+          status === "loading" && (
+          // tailwindcss 适配方便的
+          <div className="w-full max-w-[500px] text-left mx-auto p-4 bottom-0 mt-auto">
+            <p className="text-center mb-1">{loadingMessage}</p>
+            {/* 循环输出 v-for vue react 绝对不去发明
+                map ? 一个数组返回一个新数组
+                原来json数组  =>  渲染的进度条jsx 
+            */}
+            {
+              // 循环输出，react 用了原生js 
+              progressItems.map(({ text, percentage, total}, i) => (
+                // 组件函数可以以自定义标签的方式，类html插入
+                // 开关标签的 xml
+                // 自闭合标签
+                // App 的子组件
+                <Progress text={text} percentage={percentage} total={total} />
+              ))
+            }
+          </div>
+        )}
       </div>):(
         <div>您的浏览器还不支持WebGPU</div>
       )
